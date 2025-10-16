@@ -288,7 +288,7 @@ const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
 let mesActual = meses[(new Date()).getMonth()];
 let usuarioGlobal = localStorage.getItem("usuarioCelula") || "";
 
-// === Ventanas modales reutilizables ===
+// === Ventanas modales reutilizables (NUEVO) ===
 
 // Mostrar popup de confirmación (reemplaza confirm())
 function mostrarConfirmacion(titulo, mensaje, callback) {
@@ -346,7 +346,6 @@ function mostrarAlerta(titulo, mensaje, colorFondo = '#0066ff') {
   document.body.appendChild(temp);
 }
 
-
 /* === LOGIN === */
 function iniciarSesion(){
   const nombre = document.getElementById("nombreUsuario").value.trim();
@@ -354,14 +353,13 @@ function iniciarSesion(){
   localStorage.setItem("usuarioCelula", nombre);
   usuarioGlobal = nombre;
   document.getElementById("loginScreen").style.display="none";
-  actualizarUserCircle();
+    actualizarUserCircle();
 
   // close menu if open
   const menu = document.getElementById('menu');
   const overlay = document.getElementById('menuOverlay');
   if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
 }
-
 function cerrarSesion(){
   // Reemplaza confirm()
   mostrarConfirmacion("Cerrar sesión", "¿Estás seguro de que quieres cerrar tu sesión?", (confirmado) => {
@@ -376,7 +374,6 @@ function cerrarSesion(){
     }
   });
 }
-
 if(usuarioGlobal){
   document.getElementById("loginScreen").style.display="none";
   actualizarUserCircle();
@@ -398,7 +395,15 @@ function actualizarUserCircle(){
   circle.style.display = "flex";
 }
 
-// Se mantuvo la antigua función para evitar romper la lógica del click en el círculo
+  function mostrarNombreUsuario(){
+  if(usuarioGlobal){
+    // Se reemplaza alert por el popup de usuario existente
+    if(!usuarioGlobal) return;
+    document.getElementById("popupNombre").textContent = usuarioGlobal;
+    document.getElementById("popupUsuario").style.display = "flex";
+  }
+}
+
 function mostrarNombreUsuario(){
   if(!usuarioGlobal) return;
   document.getElementById("popupNombre").textContent = usuarioGlobal;
@@ -419,24 +424,40 @@ function closeMenuIfOpen(evt){ const menu=document.getElementById('menu'); if(me
 function changeCount(tipo, delta){ datos[tipo]=Math.max(0,(datos[tipo]||0)+delta); document.getElementById(tipo).textContent=datos[tipo]; actualizarTotal(); }
 function actualizarTotal(){ const total=Object.values(datos).reduce((a,b)=>a+b,0); document.getElementById('total').textContent=total; }
 
-/* === POPUP ANTIGUO ELIMINADO === */
-// La función mostrarPopupConfirm ya no es necesaria y fue eliminada.
+/* === POPUP MODERNO === */
+// Tu función original, adaptada para usar la nueva 'mostrarConfirmacion' si se usa como alerta simple.
+function mostrarPopupConfirm(titulo, mensaje, callback){
+  // Si no hay callback, lo tratamos como una alerta simple (usando la nueva función)
+  if (!callback) {
+    let color = '#0066ff';
+    if (titulo.startsWith("⚠️")) color = "#ff9900"; // Advertencia
+    if (titulo.startsWith("✅")) color = "#00aa00"; // Éxito
+    mostrarAlerta(titulo.replace(/[⚠️✅]/g, '').trim(), mensaje, color);
+    return;
+  }
+
+  // Si hay callback, usamos la nueva confirmación (adaptando el callback)
+  mostrarConfirmacion(titulo, mensaje, (confirmado) => {
+    if (confirmado && callback) callback();
+  });
+}
+
 
   
 /* === SUBIR ASISTENCIA MEJORADA === */
 async function subirAsistencia(){
   if(!usuarioGlobal) return mostrarAlerta("⚠️ Error de sesión", "Debes iniciar sesión primero.", "#ff4444"); // Reemplaza alert
   const total = Object.values(datos).reduce((a,b)=>a+b,0);
-  if(total === 0) return mostrarAlerta("Sin registros", "No hay personas registradas para subir.", "#ff9900"); // Reemplaza mostrarPopupConfirm
+  if(total === 0) return mostrarAlerta("Sin registros", "No hay personas registradas.", "#ff9900"); // Reemplaza mostrarPopupConfirm con alerta
 
   // 🔹 cerrar menú si está abierto
   const menu = document.getElementById('menu');
   const overlay = document.getElementById('menuOverlay');
   if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
 
-  // 🔹 confirmar envío - Usando la nueva función
+  // 🔹 confirmar envío
   mostrarConfirmacion("Confirmar envío", "¿Deseas subir esta asistencia?", async (confirmado) => {
-    if (!confirmado) return; // Si no confirma, no hace nada
+    if(!confirmado) return; // Si no confirma, se detiene
 
     const fecha = new Date().toLocaleString('es-CO', {
       day: '2-digit', month: '2-digit', year: 'numeric',
@@ -459,17 +480,17 @@ async function subirAsistencia(){
       const text = await res.text();
 
       if (text.includes('OK')) {
-        mostrarAlerta("✅ Enviado", "Asistencia registrada correctamente.", "#00aa00");
+        mostrarAlerta("✅ Enviado", "Asistencia registrada correctamente.", "#00aa00"); // Reemplaza mostrarPopupConfirm con alerta
         // 🔄 Reiniciar contadores
         for (const k in datos) { datos[k] = 0; document.getElementById(k).textContent = 0; }
         document.getElementById('total').textContent = 0;
       } else if (text.includes('DUPLICADO')) {
-        mostrarAlerta("⚠️ Duplicado", "Ya se envió recientemente.", "#ff9900");
+        mostrarAlerta("⚠️ Duplicado", "Ya se envió recientemente.", "#ff9900"); // Reemplaza mostrarPopupConfirm con alerta
       } else {
-        mostrarAlerta("ℹ️ Servidor", text, "#0066ff");
+        mostrarAlerta("ℹ️ Servidor", text, "#0066ff"); // Reemplaza mostrarPopupConfirm con alerta
       }
     } catch (e) {
-      mostrarAlerta("⚠️ Error de conexión", "No se pudo conectar con el servidor.", "#ff4444");
+      mostrarAlerta("⚠️ Error de conexión", "No se pudo conectar con el servidor.", "#ff4444"); // Reemplaza mostrarPopupConfirm con alerta
     }
   });
 }
@@ -521,7 +542,7 @@ async function eliminarAsistencia(){
       const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuarioGlobal)}`);
       const text=await res.text();
       if(text.startsWith("ELIMINADAS_")){
-        const n=text.split('_')[1]||'';
+        const n=text.split('_')[1]||''; 
         mostrarAlerta("🗑️ Eliminadas", "Se eliminaron "+n+" fila(s).", "#00aa00"); // Reemplaza alert
       }
       else mostrarAlerta("ℹ️ Servidor", text, "#0066ff"); // Reemplaza alert
@@ -538,7 +559,7 @@ async function eliminarRegistro(usuarioEnc,fechaEnc){
   // Reemplaza confirm()
   mostrarConfirmacion("Eliminar registro", `¿Eliminar el registro de ${usuario} en ${fecha}?`, async (confirmado) => {
     if (!confirmado) return;
-
+    
     try{
       const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
       const text=await res.text();
