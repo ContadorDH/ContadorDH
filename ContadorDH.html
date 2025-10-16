@@ -160,7 +160,7 @@
 </footer>
 
 <script>
-  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwZ6xXXXXXXX/exec"; // 🔧 REEMPLAZA
+  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuad6LbOg5k2TFzphjhPTm-NwMJwURzhfFPsEb8a5oB9KXuXIhWxe5QzrR2xLnDjYVlA/exec";
 
   const datos = {
     hermanos: 0,
@@ -183,9 +183,19 @@
 
   async function subirAsistencia() {
     const total = Object.values(datos).reduce((a,b)=>a+b,0);
-    const fecha = new Date().toLocaleString("es-CO");
-    const usuario = prompt("Nombre de quien reporta:");
-    if (!usuario) return alert("❗ Ingresa un nombre.");
+    if (total === 0) return alert("❗ No hay personas registradas.");
+    const usuario = prompt("👤 Ingresa tu nombre:");
+    if (!usuario) return alert("❗ Debes ingresar un nombre.");
+
+    const fecha = new Date().toLocaleString("es-CO", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    });
 
     const params = new URLSearchParams({
       accion: "insertar",
@@ -195,12 +205,17 @@
       total
     });
 
-    const res = await fetch(`${URL_SCRIPT}?${params}`);
-    const text = await res.text();
-
-    if (text.includes("OK")) alert("✅ Asistencia registrada correctamente.");
-    else if (text.includes("DUPLICADO")) alert("⚠️ Ya se envió recientemente.");
-    else alert("❌ Error al subir asistencia.");
+    try {
+      const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
+      const text = await res.text();
+      console.log("Respuesta del servidor:", text);
+      if (text.includes("OK")) alert("✅ Asistencia registrada correctamente.");
+      else if (text.includes("DUPLICADO")) alert("⚠️ Ya se envió recientemente.");
+      else alert("❌ Error: " + text);
+    } catch (err) {
+      alert("⚠️ No se pudo conectar al servidor.");
+      console.error(err);
+    }
   }
 
   async function verAsistencia() {
@@ -224,7 +239,6 @@
     if (!confirm("¿Eliminar asistencias recientes (últimos 10 min)?")) return;
     const res = await fetch(`${URL_SCRIPT}?accion=eliminar`);
     const text = await res.text();
-
     if (text.includes("ELIMINADAS")) alert("🗑️ Asistencias eliminadas.");
     else alert("⚠️ No se eliminaron registros recientes.");
   }
