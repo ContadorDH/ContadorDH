@@ -157,14 +157,15 @@
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
   <div class="title">📋 Asistencia Bochica Sur</div>
   <div style="width:28px"></div>
-    <div id="userCircle" style="
-    width:36px;height:36px;border-radius:50%;
+   <div id="userCircle" onclick="mostrarNombreUsuario()" title=""
+    style="width:36px;height:36px;border-radius:50%;
     background:#ffffff33;color:#fff;display:flex;
     align-items:center;justify-content:center;
     font-weight:700;font-size:0.9rem;text-transform:uppercase;
-    border:2px solid #ffffff55;cursor:default;">
+    border:2px solid #ffffff55;cursor:pointer;">
   </div>
 </header>
+
 
 </header>
 
@@ -251,6 +252,12 @@ function actualizarUserCircle(){
     : partes[0][0];
   circle.textContent = iniciales.toUpperCase();
   circle.style.display = "flex";
+}
+
+  function mostrarNombreUsuario(){
+  if(usuarioGlobal){
+    alert("👤 Usuario actual: " + usuarioGlobal);
+  }
 }
 
 
@@ -343,4 +350,5 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
 
