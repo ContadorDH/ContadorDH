@@ -35,7 +35,6 @@
   header button{ background:none;border:0;color:#fff;font-size:20px;cursor:pointer }
   header .title{ font-size:1.05rem }
 
-  /* menu overlay + drawer */
   #menuOverlay{
     position:fixed; inset:0; background:rgba(0,0,0,0.32); display:none; z-index:80;
   }
@@ -82,7 +81,6 @@
     font-size:1.1rem;
   }
 
-  /* pantalla ver asistencia */
   #verPantalla{
     position:fixed; inset:64px 0 0 0; background:var(--bg); z-index:70;
     display:none; flex-direction:column; align-items:center; padding:12px 12px; overflow:auto;
@@ -107,7 +105,6 @@
   }
   .row small{ color:var(--muted); display:block; margin-top:6px; font-size:0.85rem }
 
-  /* login */
   #loginScreen{
     position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center;
     flex-direction:column; z-index:120; gap:16px;
@@ -124,7 +121,6 @@
     font-weight:600;
   }
 
-  /* spinner */
   .spinner{
     width:36px; height:36px; border-radius:50%; border:4px solid #e6eefc; border-top-color:var(--primary);
     animation:spin .9s linear infinite; margin-left:8px;
@@ -157,6 +153,7 @@
   <button class="item" onclick="subirAsistencia()">📤 Subir asistencia</button>
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
   <button class="item" onclick="eliminarAsistencia()">🗑️ Eliminar registros</button>
+  <button class="item" onclick="cerrarSesion()">🔒 Cerrar sesión</button>
   <div style="flex:1"></div>
   <button class="item" onclick="toggleMenu()">Cerrar</button>
 </nav>
@@ -196,6 +193,21 @@ function iniciarSesion(){
   localStorage.setItem("usuarioCelula", nombre);
   usuarioGlobal = nombre;
   document.getElementById("loginScreen").style.display="none";
+  // close menu if open
+  const menu = document.getElementById('menu');
+  const overlay = document.getElementById('menuOverlay');
+  if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
+}
+function cerrarSesion(){
+  if(confirm("¿Cerrar sesión?")){
+    localStorage.removeItem("usuarioCelula");
+    usuarioGlobal="";
+    document.getElementById("loginScreen").style.display="flex";
+    // close menu if open
+    const menu=document.getElementById('menu');
+    const overlay=document.getElementById('menuOverlay');
+    if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
+  }
 }
 if(usuarioGlobal){
   document.getElementById("loginScreen").style.display="none";
@@ -243,12 +255,17 @@ async function verAsistencia(mes){
     listado.innerHTML=filas.map(r=>{
       const [usuario,fecha,h,hm,am,ad,ni,tot]=r;
       const esPropio = usuarioGlobal && usuarioGlobal.toLowerCase()===String(usuario).toLowerCase();
+      // Use encodeURIComponent to safely pass parameters to eliminarRegistro via onclick
+      const usuarioEsc = escapeHTML(String(usuario || ''));
+      const fechaEsc = escapeHTML(String(fecha || ''));
+      const usuarioEnc = encodeURIComponent(String(usuario || ''));
+      const fechaEnc = encodeURIComponent(String(fecha || ''));
       return `<div class="row">
-        <strong>👤 ${escapeHTML(usuario)}</strong>
-        <small>📅 ${escapeHTML(fecha)}</small>
+        <strong>👤 ${usuarioEsc}</strong>
+        <small>📅 ${fechaEsc}</small>
         <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
         <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
-        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarRegistro('${escapeHTML(usuario)}','${escapeHTML(fecha)}')">🗑️ Eliminar</button>`:''}
+        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarRegistro('${usuarioEnc}','${fechaEnc}')">🗑️ Eliminar</button>`:''}
       </div>`;
     }).join('');
   }catch(e){listado.innerHTML=`<div class="row">⚠️ Error obteniendo datos.</div>`;}finally{showLoading(false);}
@@ -261,23 +278,25 @@ async function eliminarAsistencia(){
   try{
     const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuarioGlobal)}`);
     const text=await res.text();
-    if(text.startsWith("ELIMINADAS_")){alert("🗑️ "+text.replace("_"," "));}
+    if(text.startsWith("ELIMINADAS_")){const n=text.split('_')[1]||''; alert("🗑️ Se eliminaron "+n+" fila(s).");}
     else alert("ℹ️ "+text);
   }catch(e){alert("⚠️ Error al eliminar.");}
 }
-async function eliminarRegistro(usuario,fecha){
+async function eliminarRegistro(usuarioEnc,fechaEnc){
+  const usuario = decodeURIComponent(usuarioEnc);
+  const fecha = decodeURIComponent(fechaEnc);
   if(!confirm(`¿Eliminar el registro de ${usuario} en ${fecha}?`)) return;
   try{
     const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
     const text=await res.text();
-    if(text.includes("ELIMINADA")){alert("🗑️ Registro eliminado.");refrescarMes();}
+    if(text.includes("ELIMINADA") || text.startsWith("ELIMINADAS_") ){ alert("🗑️ Registro eliminado."); refrescarMes(); }
     else alert("⚠️ "+text);
   }catch(e){alert("⚠️ Error al eliminar.");}
 }
 
 /* === HELPERS === */
 function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-(function init(){actualizarTotal();const select=document.getElementById('selectMes');meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});select.value=mesActual;})();
+(function init(){actualizarTotal();const select=document.getElementById('selectMes');meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});select.value=mesActual; /* show login if needed */ if(usuarioGlobal){ document.getElementById("loginScreen").style.display="none"; } else { document.getElementById("loginScreen").style.display="flex"; } })();
 </script>
 </body>
 </html>
