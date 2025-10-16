@@ -105,44 +105,35 @@
 <header>📋 Asistencia Célula</header>
 
 <main>
-  <div class="counter">
-    <h3>Hermanos</h3>
+  <div class="counter"><h3>Hermanos</h3>
     <div class="controls">
       <button onclick="changeCount('hermanos', -1)">−</button>
       <span id="hermanos" class="value">0</span>
       <button onclick="changeCount('hermanos', 1)">+</button>
     </div>
   </div>
-
-  <div class="counter">
-    <h3>Hermanas</h3>
+  <div class="counter"><h3>Hermanas</h3>
     <div class="controls">
       <button onclick="changeCount('hermanas', -1)">−</button>
       <span id="hermanas" class="value">0</span>
       <button onclick="changeCount('hermanas', 1)">+</button>
     </div>
   </div>
-
-  <div class="counter">
-    <h3>Amigos</h3>
+  <div class="counter"><h3>Amigos</h3>
     <div class="controls">
       <button onclick="changeCount('amigos', -1)">−</button>
       <span id="amigos" class="value">0</span>
       <button onclick="changeCount('amigos', 1)">+</button>
     </div>
   </div>
-
-  <div class="counter">
-    <h3>Adolescentes</h3>
+  <div class="counter"><h3>Adolescentes</h3>
     <div class="controls">
       <button onclick="changeCount('adolescentes', -1)">−</button>
       <span id="adolescentes" class="value">0</span>
       <button onclick="changeCount('adolescentes', 1)">+</button>
     </div>
   </div>
-
-  <div class="counter">
-    <h3>Niños</h3>
+  <div class="counter"><h3>Niños</h3>
     <div class="controls">
       <button onclick="changeCount('niños', -1)">−</button>
       <span id="niños" class="value">0</span>
@@ -155,93 +146,63 @@
 
 <footer>
   <button onclick="subirAsistencia()">📤 Subir</button>
-  <button onclick="verAsistencia()">👀 Ver</button>
-  <button onclick="eliminarAsistencia()">🗑️ Eliminar</button>
 </footer>
 
 <script>
-  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuad6LbOg5k2TFzphjhPTm-NwMJwURzhfFPsEb8a5oB9KXuXIhWxe5QzrR2xLnDjYVlA/exec";
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuad6LbOg5k2TFzphjhPTm-NwMJwURzhfFPsEb8a5oB9KXuXIhWxe5QzrR2xLnDjYVlA/exec";
 
-  const datos = {
-    hermanos: 0,
-    hermanas: 0,
-    amigos: 0,
-    adolescentes: 0,
-    niños: 0
-  };
+const datos = {
+  hermanos: 0,
+  hermanas: 0,
+  amigos: 0,
+  adolescentes: 0,
+  niños: 0
+};
 
-  function changeCount(tipo, delta) {
-    datos[tipo] = Math.max(0, datos[tipo] + delta);
-    document.getElementById(tipo).textContent = datos[tipo];
-    actualizarTotal();
-  }
+function changeCount(tipo, delta) {
+  datos[tipo] = Math.max(0, datos[tipo] + delta);
+  document.getElementById(tipo).textContent = datos[tipo];
+  actualizarTotal();
+}
 
-  function actualizarTotal() {
-    const total = Object.values(datos).reduce((a, b) => a + b, 0);
-    document.getElementById("total").textContent = total;
-  }
+function actualizarTotal() {
+  const total = Object.values(datos).reduce((a, b) => a + b, 0);
+  document.getElementById("total").textContent = total;
+}
 
-  async function subirAsistencia() {
-    const total = Object.values(datos).reduce((a,b)=>a+b,0);
-    if (total === 0) return alert("❗ No hay personas registradas.");
-    const usuario = prompt("👤 Ingresa tu nombre:");
-    if (!usuario) return alert("❗ Debes ingresar un nombre.");
+async function subirAsistencia() {
+  const total = Object.values(datos).reduce((a,b)=>a+b,0);
+  if (total === 0) return alert("❗ No hay personas registradas.");
 
-    const fecha = new Date().toLocaleString("es-CO", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true
-    });
+  const usuario = prompt("👤 Ingresa tu nombre:");
+  if (!usuario) return alert("❗ Debes ingresar un nombre.");
 
-    const params = new URLSearchParams({
-      accion: "insertar",
-      usuario,
-      fecha,
-      ...datos,
-      total
-    });
+  const fecha = new Date().toLocaleString("es-CO", {
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+  });
 
-    try {
-      const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
-      const text = await res.text();
-      console.log("Respuesta del servidor:", text);
-      if (text.includes("OK")) alert("✅ Asistencia registrada correctamente.");
-      else if (text.includes("DUPLICADO")) alert("⚠️ Ya se envió recientemente.");
-      else alert("❌ Error: " + text);
-    } catch (err) {
-      alert("⚠️ No se pudo conectar al servidor.");
-      console.error(err);
-    }
-  }
+  const params = new URLSearchParams({
+    usuario,
+    fecha,
+    hermanos: datos.hermanos,
+    hermanas: datos.hermanas,
+    amigos: datos.amigos,
+    adolescentes: datos.adolescentes,
+    niños: datos.niños,
+    total
+  });
 
-  async function verAsistencia() {
-    const mes = new Date().toLocaleString("es-CO", { month: "long" });
-    const res = await fetch(`${URL_SCRIPT}?accion=listar&mes=${mes}`);
-    const data = await res.json();
-
-    if (!data || data.length <= 1) {
-      alert("📭 No hay asistencias registradas este mes.");
-      return;
-    }
-
-    const ultimas = data.slice(-5).map(r => 
-      `🗓️ ${r[1]}\n👤 ${r[0]} → ${r[7]} personas`
-    ).join("\n\n");
-
-    alert("📋 Últimas asistencias:\n\n" + ultimas);
-  }
-
-  async function eliminarAsistencia() {
-    if (!confirm("¿Eliminar asistencias recientes (últimos 10 min)?")) return;
-    const res = await fetch(`${URL_SCRIPT}?accion=eliminar`);
+  try {
+    const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
     const text = await res.text();
-    if (text.includes("ELIMINADAS")) alert("🗑️ Asistencias eliminadas.");
-    else alert("⚠️ No se eliminaron registros recientes.");
+    console.log("Respuesta:", text);
+    alert(text.includes("OK") ? "✅ Asistencia registrada." : "⚠️ No se pudo registrar.");
+  } catch (err) {
+    console.error(err);
+    alert("⚠️ Error de conexión con el servidor.");
   }
+}
 </script>
 
 </body>
