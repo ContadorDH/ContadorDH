@@ -209,9 +209,51 @@
   </div>
 
   <div id="listado"></div>
+
+  }<!-- pantalla login -->
+<section id="loginScreen" style="
+  position:fixed; inset:0; background:#f4f6fb; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; z-index:9999;
+">
+  <div style="background:#fff; padding:30px 24px; border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,0.1); width:85%; max-width:340px; text-align:center;">
+    <h2 style="margin-bottom:20px; color:#0066ff;">Iniciar Sesión</h2>
+    <input id="usuarioInput" type="text" placeholder="Tu nombre completo" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; font-size:1rem;">
+    <button onclick="login()" style="margin-top:20px; width:100%; background:#0066ff; color:#fff; border:0; border-radius:8px; padding:10px; font-size:1rem; cursor:pointer;">Entrar</button>
+  </div>
+</section>
+
 </section>
 
 <script>
+/* ======== LOGIN Y SESIÓN ======== */
+let usuarioActivo = null;
+
+function login() {
+  const nombre = document.getElementById("usuarioInput").value.trim();
+  if (!nombre) return alert("Por favor ingresa tu nombre.");
+  localStorage.setItem("usuarioCelula", nombre);
+  usuarioActivo = nombre;
+  document.getElementById("loginScreen").style.display = "none";
+  actualizarHeaderNombre();
+}
+
+function actualizarHeaderNombre() {
+  const headerTitle = document.querySelector("header .title");
+  if (usuarioActivo) headerTitle.textContent = `📋 Asistencia Célula – ${usuarioActivo}`;
+}
+
+(function checkLogin() {
+  const stored = localStorage.getItem("usuarioCelula");
+  if (stored) {
+    usuarioActivo = stored;
+    document.getElementById("loginScreen").style.display = "none";
+    actualizarHeaderNombre();
+  }
+})();
+
+
+
+  
 /* ================= CONFIG ================= */
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuad6LbOg5k2TFzphjhPTm-NwMJwURzhfFPsEb8a5oB9KXuXIhWxe5QzrR2xLnDjYVlA/exec";
 
@@ -255,8 +297,9 @@ async function subirAsistencia(){
 
   const total = Object.values(datos).reduce((a,b)=>a+b,0);
   if(total === 0) return alert('❗ No hay personas registradas.');
-  const usuario = prompt('👤 Ingresa tu nombre:');
-  if(!usuario) return alert('❗ Debes ingresar un nombre.');
+ const usuario = usuarioActivo;
+if (!usuario) return alert("Debes iniciar sesión antes de subir asistencia.");
+
 
   const fecha = new Date().toLocaleString('es-CO', {
     day:'2-digit', month:'2-digit', year:'numeric',
@@ -363,23 +406,30 @@ async function verAsistencia(mes){
 
     // data: array de filas. Saltar encabezado (index 0)
     const filas = data.slice(1).reverse(); // mostramos últimas primero
-    listado.innerHTML = filas.map(r=>{
-      // r = [Usuario, Fecha, Hermanos, Hermanas, Amigos, Adolescentes, Niños, Total]
-      const usuario = r[0]||'';
-      const fecha = r[1]||'';
-      const h = r[2]||'0';
-      const hm = r[3]||'0';
-      const am = r[4]||'0';
-      const ad = r[5]||'0';
-      const ni = r[6]||'0';
-      const tot = r[7]||'0';
-      return `<div class="row">
-        <strong>👤 ${escapeHTML(usuario)}</strong>
-        <small>📅 ${escapeHTML(fecha)}</small>
-        <div style="margin-top:8px">🙋‍♂️ ${h} &nbsp; 🙋‍♀️ ${hm} &nbsp; 🤝 ${am} &nbsp; 👧 ${ad} &nbsp; 🧒 ${ni}</div>
-        <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
-      </div>`;
-    }).join('');
+    listado.innerHTML = filas.map((r, index) => {
+  const usuario = r[0] || '';
+  const fecha = r[1] || '';
+  const h = r[2] || '0';
+  const hm = r[3] || '0';
+  const am = r[4] || '0';
+  const ad = r[5] || '0';
+  const ni = r[6] || '0';
+  const tot = r[7] || '0';
+
+  // Solo mostrar botón eliminar si es del usuario logueado
+  const puedeEliminar = usuarioActivo && usuario.toLowerCase() === usuarioActivo.toLowerCase();
+
+  return `<div class="row">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>👤 ${escapeHTML(usuario)}</strong>
+      ${puedeEliminar ? `<button onclick="eliminarRegistro('${fecha}', '${usuario}')" style="background:none;border:0;color:#e00;cursor:pointer;font-size:18px;">🗑️</button>` : ""}
+    </div>
+    <small>📅 ${escapeHTML(fecha)}</small>
+    <div style="margin-top:8px">🙋‍♂️ ${h} &nbsp; 🙋‍♀️ ${hm} &nbsp; 🤝 ${am} &nbsp; 👧 ${ad} &nbsp; 🧒 ${ni}</div>
+    <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
+  </div>`;
+}).join('');
+
   }catch(err){
     console.error(err);
     document.getElementById('listado').innerHTML = `<div class="row">⚠️ Error obteniendo datos. Revisa conexión.</div>`;
@@ -389,30 +439,21 @@ async function verAsistencia(mes){
 }
 
 /* ================ ELIMINAR ASISTENCIA ================ */
-async function eliminarAsistencia(){
-  const menu = document.getElementById('menu');
-  if(menu.classList.contains('active')) toggleMenu();
-
-  if(!confirm('⚠️ ¿Eliminar asistencias de los últimos 10 minutos?')) return;
-  try{
-    const res = await fetch(`${URL_SCRIPT}?accion=eliminar`);
+/* ======== ELIMINAR UN REGISTRO ESPECÍFICO ======== */
+async function eliminarRegistro(fecha, usuario) {
+  if (!confirm(`¿Eliminar la asistencia de ${usuario} (${fecha})?`)) return;
+  try {
+    const res = await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
     const text = await res.text();
-    // el script retorna: "ELIMINADAS_X" o "NO_ELIMINADAS" o "HOJA_NO_ENCONTRADA"
-    if(text.startsWith('ELIMINADAS_')){
-      const n = text.split('_')[1] || '';
-      alert(`🗑️ Se eliminaron ${n} fila(s).`);
-    } else if(text === 'NO_ELIMINADAS'){
-      alert('ℹ️ No se encontraron registros recientes para eliminar.');
-    } else if(text === 'HOJA_NO_ENCONTRADA'){
-      alert('⚠️ No existe la hoja del mes actual en el spreadsheet.');
-    } else {
-      alert('Respuesta del servidor: ' + text);
-    }
-  }catch(err){
+    alert(text.includes("ELIMINADA") ? "🗑️ Asistencia eliminada." : "⚠️ No se pudo eliminar.");
+    // refrescar vista actual
+    verAsistencia(document.getElementById("selectMes").value);
+  } catch (err) {
     console.error(err);
-    alert('⚠️ Error de conexión al eliminar.');
+    alert("⚠️ Error al eliminar registro.");
   }
 }
+
 
 /* seguridad: escape HTML simple */
 function escapeHTML(s){ return (s+'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -431,3 +472,4 @@ function escapeHTML(s){ return (s+'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'
 </script>
 </body>
 </html>
+
