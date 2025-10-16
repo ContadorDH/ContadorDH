@@ -65,37 +65,41 @@ header .title {
 
 
 
-   #menuOverlay{
-    position:fixed; inset:0; background:rgba(0,0,0,0.4); display:none; z-index:80;
-    backdrop-filter: blur(4px);
+    #menuOverlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; z-index:80;
+    backdrop-filter: blur(8px);
   }
   #menuOverlay.active{ display:block; }
 
   #menu{
-    position:fixed; top:0; left:-280px; width:280px; height:100%; 
+    position:fixed; top:0; left:-300px; width:300px; height:100%; 
     background:linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    box-shadow:8px 0 32px rgba(0,0,0,0.12), inset -1px 0 0 rgba(255,255,255,0.8);
-    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); z-index:90;
-    padding:32px 0 24px; display:flex; flex-direction:column;
-    border-radius:0 16px 16px 0;
+    box-shadow:6px 0 28px rgba(0,0,0,0.15); 
+    transition: left .28s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index:90;
+    padding:28px 0 20px; display:flex; flex-direction:column;
   }
-  #menu.active{ left:0; transform: translateX(0) scale(1); }
+  #menu.active{ left:0; }
   #menu .item{
-    padding:16px 20px; margin:0 16px; border-radius:12px; 
-    background:transparent; text-align:left; font-size:1.05rem; 
-    color:#334155; border:0; cursor:pointer; margin-bottom:4px;
-    font-weight:500; display:flex; align-items:center; gap:12px;
+    padding:18px 24px; margin:0 8px; border-radius:12px; 
+    background:transparent; text-align:left; font-size:1.1rem; 
+    color:#1e293b; border:0; cursor:pointer; margin-bottom:2px;
+    font-weight:500; display:flex; align-items:center; gap:14px;
     transition: all .2s ease; position:relative; overflow:hidden;
+    touch-action: manipulation;
+  }
+  #menu .item:active{
+    background:linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color:#fff; transform: scale(0.98);
   }
   #menu .item::before{
     content:''; position:absolute; left:0; top:0; bottom:0; width:4px; 
     background:var(--primary); transform: scaleY(0); transition: transform .2s ease;
   }
-  #menu .item:hover{
+  #menu .item:hover, #menu .item:focus{
     background:linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color:#fff; transform: translateX(4px);
+    color:#fff;
   }
-  #menu .item:hover::before{ transform: scaleY(1); }
+  #menu .item:hover::before, #menu .item:focus::before{ transform: scaleY(1); }
   #menu .item:last-child{ margin-bottom:0; }
 
   main{
@@ -535,4 +539,5 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
 
