@@ -22,7 +22,6 @@
     height:100vh;
     overflow:hidden;
   }
-
   header{
     height:64px;
     background:var(--primary);
@@ -78,12 +77,12 @@
   }
 
   .totalCard{
-    width:92%; max-width:440px; background:linear-gradient(90deg,#fff #fff);
+    width:92%; max-width:440px; background:linear-gradient(90deg,#fff,#fff);
     border-radius:var(--radius); padding:14px; text-align:center; font-weight:700; box-shadow:0 10px 28px rgba(2,20,80,0.04);
     font-size:1.1rem;
   }
 
-  /* ver pantalla */
+  /* pantalla ver asistencia */
   #verPantalla{
     position:fixed; inset:64px 0 0 0; background:var(--bg); z-index:70;
     display:none; flex-direction:column; align-items:center; padding:12px 12px; overflow:auto;
@@ -108,21 +107,43 @@
   }
   .row small{ color:var(--muted); display:block; margin-top:6px; font-size:0.85rem }
 
+  /* login */
+  #loginScreen{
+    position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center;
+    flex-direction:column; z-index:120; gap:16px;
+  }
+  #loginBox{
+    background:var(--card); padding:28px; border-radius:var(--radius);
+    box-shadow:0 8px 24px rgba(0,0,0,0.08); text-align:center;
+  }
+  #loginBox input{
+    width:220px; padding:10px; border-radius:8px; border:1px solid #ddd; font-size:1rem;
+  }
+  #loginBox button{
+    margin-top:12px; background:var(--primary); color:#fff; border:0; padding:10px 16px; border-radius:8px; cursor:pointer;
+    font-weight:600;
+  }
+
   /* spinner */
   .spinner{
     width:36px; height:36px; border-radius:50%; border:4px solid #e6eefc; border-top-color:var(--primary);
     animation:spin .9s linear infinite; margin-left:8px;
   }
   @keyframes spin{ to{ transform:rotate(360deg) } }
-
-  /* responsive tweaks */
-  @media (min-width:720px){
-    main{ padding:22px }
-    .card{ padding:14px 18px }
-  }
 </style>
 </head>
 <body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div id="loginBox">
+    <h2>Inicio de sesión</h2>
+    <p>Ingresa tu nombre para registrar asistencias</p>
+    <input type="text" id="nombreUsuario" placeholder="Tu nombre completo">
+    <br>
+    <button onclick="iniciarSesion()">Entrar</button>
+  </div>
+</div>
 
 <header>
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
@@ -130,346 +151,133 @@
   <div style="width:28px"></div>
 </header>
 
-<!-- drawer overlay -->
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
 
-<!-- drawer -->
 <nav id="menu" aria-hidden="true">
   <button class="item" onclick="subirAsistencia()">📤 Subir asistencia</button>
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
   <button class="item" onclick="eliminarAsistencia()">🗑️ Eliminar registros</button>
-  <!-- área vacía clickeable dentro del menú para cerrarlo -->
   <div style="flex:1"></div>
   <button class="item" onclick="toggleMenu()">Cerrar</button>
 </nav>
 
 <main id="principal">
-  <!-- Counters -->
-  <div class="card">
-    <div class="label">Hermanos</div>
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('hermanos', -1)">−</button>
-      <div class="value" id="hermanos">0</div>
-      <button class="counterBtn" onclick="changeCount('hermanos', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="label">Hermanas</div>
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('hermanas', -1)">−</button>
-      <div class="value" id="hermanas">0</div>
-      <button class="counterBtn" onclick="changeCount('hermanas', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="label">Amigos</div>
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('amigos', -1)">−</button>
-      <div class="value" id="amigos">0</div>
-      <button class="counterBtn" onclick="changeCount('amigos', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="label">Adolescentes</div>
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('adolescentes', -1)">−</button>
-      <div class="value" id="adolescentes">0</div>
-      <button class="counterBtn" onclick="changeCount('adolescentes', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="label">Niños</div>
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('niños', -1)">−</button>
-      <div class="value" id="niños">0</div>
-      <button class="counterBtn" onclick="changeCount('niños', 1)">+</button>
-    </div>
-  </div>
-
+  <div class="card"><div class="label">Hermanos</div><div class="controls"><button class="counterBtn" onclick="changeCount('hermanos', -1)">−</button><div class="value" id="hermanos">0</div><button class="counterBtn" onclick="changeCount('hermanos', 1)">+</button></div></div>
+  <div class="card"><div class="label">Hermanas</div><div class="controls"><button class="counterBtn" onclick="changeCount('hermanas', -1)">−</button><div class="value" id="hermanas">0</div><button class="counterBtn" onclick="changeCount('hermanas', 1)">+</button></div></div>
+  <div class="card"><div class="label">Amigos</div><div class="controls"><button class="counterBtn" onclick="changeCount('amigos', -1)">−</button><div class="value" id="amigos">0</div><button class="counterBtn" onclick="changeCount('amigos', 1)">+</button></div></div>
+  <div class="card"><div class="label">Adolescentes</div><div class="controls"><button class="counterBtn" onclick="changeCount('adolescentes', -1)">−</button><div class="value" id="adolescentes">0</div><button class="counterBtn" onclick="changeCount('adolescentes', 1)">+</button></div></div>
+  <div class="card"><div class="label">Niños</div><div class="controls"><button class="counterBtn" onclick="changeCount('niños', -1)">−</button><div class="value" id="niños">0</div><button class="counterBtn" onclick="changeCount('niños', 1)">+</button></div></div>
   <div class="totalCard">Total asistencia: <span id="total">0</span></div>
 </main>
 
-<!-- pantalla ver asistencia -->
 <section id="verPantalla" aria-hidden="true">
   <div id="verHeader">
-    <div class="left">
-      <button onclick="cerrarVerPantalla()">←</button>
-      <div id="tituloMes" style="font-weight:700; font-size:1rem">Asistencia</div>
-    </div>
-
+    <div class="left"><button onclick="cerrarVerPantalla()">←</button><div id="tituloMes" style="font-weight:700; font-size:1rem">Asistencia</div></div>
     <div style="display:flex;align-items:center;gap:8px">
       <select id="selectMes" aria-label="Seleccionar mes" onchange="mesSeleccionado()"></select>
       <button title="Refrescar" onclick="refrescarMes()">⟳</button>
       <div id="loadingIndicator" style="display:none"><div class="spinner"></div></div>
     </div>
   </div>
-
   <div id="listado"></div>
-
-  }<!-- pantalla login -->
-<section id="loginScreen" style="
-  position:fixed; inset:0; background:#f4f6fb; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; z-index:9999;
-">
-  <div style="background:#fff; padding:30px 24px; border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,0.1); width:85%; max-width:340px; text-align:center;">
-    <h2 style="margin-bottom:20px; color:#0066ff;">Iniciar Sesión</h2>
-    <input id="usuarioInput" type="text" placeholder="Tu nombre completo" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; font-size:1rem;">
-    <button onclick="login()" style="margin-top:20px; width:100%; background:#0066ff; color:#fff; border:0; border-radius:8px; padding:10px; font-size:1rem; cursor:pointer;">Entrar</button>
-  </div>
-</section>
-
 </section>
 
 <script>
-/* ======== LOGIN Y SESIÓN ======== */
-let usuarioActivo = null;
-
-function login() {
-  const nombre = document.getElementById("usuarioInput").value.trim();
-  if (!nombre) return alert("Por favor ingresa tu nombre.");
-  localStorage.setItem("usuarioCelula", nombre);
-  usuarioActivo = nombre;
-  document.getElementById("loginScreen").style.display = "none";
-  actualizarHeaderNombre();
-}
-
-function actualizarHeaderNombre() {
-  const headerTitle = document.querySelector("header .title");
-  if (usuarioActivo) headerTitle.textContent = `📋 Asistencia Célula – ${usuarioActivo}`;
-}
-
-(function checkLogin() {
-  const stored = localStorage.getItem("usuarioCelula");
-  if (stored) {
-    usuarioActivo = stored;
-    document.getElementById("loginScreen").style.display = "none";
-    actualizarHeaderNombre();
-  }
-})();
-
-
-
-  
-/* ================= CONFIG ================= */
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuad6LbOg5k2TFzphjhPTm-NwMJwURzhfFPsEb8a5oB9KXuXIhWxe5QzrR2xLnDjYVlA/exec";
-
-/* ================= ESTADO ================= */
 const datos = { hermanos:0, hermanas:0, amigos:0, adolescentes:0, niños:0 };
 const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 let mesActual = meses[(new Date()).getMonth()];
+let usuarioGlobal = localStorage.getItem("usuarioCelula") || "";
 
-/* ================ UI / MENÚ ================ */
-function toggleMenu(){
-  const menu = document.getElementById('menu');
-  const overlay = document.getElementById('menuOverlay');
-  menu.classList.toggle('active');
-  overlay.classList.toggle('active');
-  // set aria
-  menu.setAttribute('aria-hidden', !menu.classList.contains('active'));
+/* === LOGIN === */
+function iniciarSesion(){
+  const nombre = document.getElementById("nombreUsuario").value.trim();
+  if(!nombre) return alert("⚠️ Ingresa tu nombre para continuar.");
+  localStorage.setItem("usuarioCelula", nombre);
+  usuarioGlobal = nombre;
+  document.getElementById("loginScreen").style.display="none";
 }
-function closeMenuIfOpen(evt){
-  // si el overlay está activo, cerramos (evento click en overlay)
-  const menu = document.getElementById('menu');
-  if(menu.classList.contains('active')) toggleMenu();
-}
-/* cerrar menú si se hace click en area vacía del propio menu - ya incluido con botón "Cerrar" */
-
-/* ================ CONTADORES ================ */
-function changeCount(tipo, delta){
-  datos[tipo] = Math.max(0, (datos[tipo] || 0) + delta);
-  document.getElementById(tipo).textContent = datos[tipo];
-  actualizarTotal();
-}
-function actualizarTotal(){
-  const total = Object.values(datos).reduce((a,b)=>a+b,0);
-  document.getElementById('total').textContent = total;
+if(usuarioGlobal){
+  document.getElementById("loginScreen").style.display="none";
 }
 
-/* ================ SUBIR ASISTENCIA ================ */
+/* === MENÚ === */
+function toggleMenu(){ const menu=document.getElementById('menu');const overlay=document.getElementById('menuOverlay');menu.classList.toggle('active');overlay.classList.toggle('active');menu.setAttribute('aria-hidden',!menu.classList.contains('active')); }
+function closeMenuIfOpen(evt){ const menu=document.getElementById('menu'); if(menu.classList.contains('active')) toggleMenu(); }
+
+/* === CONTADORES === */
+function changeCount(tipo, delta){ datos[tipo]=Math.max(0,(datos[tipo]||0)+delta); document.getElementById(tipo).textContent=datos[tipo]; actualizarTotal(); }
+function actualizarTotal(){ const total=Object.values(datos).reduce((a,b)=>a+b,0); document.getElementById('total').textContent=total; }
+
+/* === SUBIR === */
 async function subirAsistencia(){
-  // cerrar menú si está abierto
-  const menu = document.getElementById('menu');
-  if(menu.classList.contains('active')) toggleMenu();
-
-  const total = Object.values(datos).reduce((a,b)=>a+b,0);
-  if(total === 0) return alert('❗ No hay personas registradas.');
- const usuario = usuarioActivo;
-if (!usuario) return alert("Debes iniciar sesión antes de subir asistencia.");
-
-
-  const fecha = new Date().toLocaleString('es-CO', {
-    day:'2-digit', month:'2-digit', year:'numeric',
-    hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true
-  });
-
-  const params = new URLSearchParams({
-    usuario, fecha,
-    hermanos: datos.hermanos, hermanas: datos.hermanas,
-    amigos: datos.amigos, adolescentes: datos.adolescentes,
-    niños: datos.niños, total
-  });
-
+  if(!usuarioGlobal) return alert("⚠️ Debes iniciar sesión primero.");
+  const total=Object.values(datos).reduce((a,b)=>a+b,0);
+  if(total===0) return alert('❗ No hay personas registradas.');
+  const fecha=new Date().toLocaleString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+  const params=new URLSearchParams({usuario:usuarioGlobal,fecha,hermanos:datos.hermanos,hermanas:datos.hermanas,amigos:datos.amigos,adolescentes:datos.adolescentes,niños:datos.niños,total});
   try{
-    const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
-    const text = await res.text();
-    // tu Apps Script responde "OK" o "DUPLICADO" etc.
-    if(text.includes('OK')) {
-      alert('✅ Asistencia registrada.');
-      // opcional: resetear contadores? no lo hacemos para no cambiar tu flujo
-    } else if(text.includes('DUPLICADO')) {
-      alert('⚠️ Ya se envió recientemente (duplicado prevenido).');
-    } else {
-      alert('ℹ️ Respuesta del servidor: ' + text);
-    }
-  }catch(err){
-    console.error(err);
-    alert('⚠️ Error de conexión con el servidor.');
-  }
+    const res=await fetch(`${URL_SCRIPT}?${params.toString()}`);
+    const text=await res.text();
+    if(text.includes('OK')) alert('✅ Asistencia registrada.');
+    else if(text.includes('DUPLICADO')) alert('⚠️ Ya se envió recientemente.');
+    else alert('ℹ️ Respuesta del servidor: '+text);
+  }catch(e){alert('⚠️ Error de conexión.');}
 }
 
-/* ================ VER ASISTENCIA (select meses) ================ */
-function abrirVerPantalla(){
-  // cerrar menú si abierto
-  const menu = document.getElementById('menu');
-  if(menu.classList.contains('active')) toggleMenu();
+/* === VER === */
+function abrirVerPantalla(){ const menu=document.getElementById('menu');if(menu.classList.contains('active'))toggleMenu();const select=document.getElementById('selectMes');if(select.options.length===0){meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});}select.value=mesActual;document.getElementById('tituloMes').textContent='Asistencia de: '+select.value;document.getElementById('verPantalla').classList.add('active');verAsistencia(select.value);}
+function cerrarVerPantalla(){document.getElementById('verPantalla').classList.remove('active');}
+function mesSeleccionado(){const select=document.getElementById('selectMes');mesActual=select.value;document.getElementById('tituloMes').textContent='Asistencia de: '+mesActual;verAsistencia(mesActual);}
+function refrescarMes(){verAsistencia(document.getElementById('selectMes').value);}
+function showLoading(s){document.getElementById('loadingIndicator').style.display=s?'block':'none';}
 
-  // poblar select si no está
-  const select = document.getElementById('selectMes');
-  if(select.options.length === 0){
-    meses.forEach((m,i)=>{
-      const opt = document.createElement('option');
-      opt.value = m;
-      opt.text = m;
-      select.appendChild(opt);
-    });
-  }
-  // seleccionar mes actual por defecto
-  select.value = mesActual;
-  document.getElementById('tituloMes').textContent = 'Asistencia de: ' + select.value;
-
-  // mostrar pantalla ver
-  const vp = document.getElementById('verPantalla');
-  vp.classList.add('active');
-  vp.setAttribute('aria-hidden','false');
-
-  // cargar datos del mes seleccionado
-  verAsistencia(select.value);
-}
-
-function cerrarVerPantalla(){
-  const vp = document.getElementById('verPantalla');
-  vp.classList.remove('active');
-  vp.setAttribute('aria-hidden','true');
-  // limpiar listado si deseas (no obligatorio)
-  // document.getElementById('listado').innerHTML = '';
-}
-
-function mesSeleccionado(){
-  const select = document.getElementById('selectMes');
-  const mes = select.value;
-  mesActual = mes;
-  document.getElementById('tituloMes').textContent = 'Asistencia de: ' + mes;
-  verAsistencia(mes);
-}
-
-function refrescarMes(){
-  const select = document.getElementById('selectMes');
-  verAsistencia(select.value);
-}
-
-/* helper: mostrar loading */
-function showLoading(show){
-  const el = document.getElementById('loadingIndicator');
-  el.style.display = show ? 'block' : 'none';
-}
-
-/* fetch listar y mostrar en tarjeta */
 async function verAsistencia(mes){
   showLoading(true);
-  const listado = document.getElementById('listado');
-  listado.innerHTML = ''; // limpiar
+  const listado=document.getElementById('listado');listado.innerHTML='';
   try{
-    const res = await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
-    // el script devuelve JSON o "[]"
-    const text = await res.text();
-    let data;
-    try { data = JSON.parse(text); } catch(e){ data = []; }
-    if(!data || data.length <= 1){
-      listado.innerHTML = `<div class="row">⚠️ No hay registros en ${mes}.</div>`;
-      showLoading(false);
-      return;
-    }
-
-    // data: array de filas. Saltar encabezado (index 0)
-    const filas = data.slice(1).reverse(); // mostramos últimas primero
-    listado.innerHTML = filas.map((r, index) => {
-  const usuario = r[0] || '';
-  const fecha = r[1] || '';
-  const h = r[2] || '0';
-  const hm = r[3] || '0';
-  const am = r[4] || '0';
-  const ad = r[5] || '0';
-  const ni = r[6] || '0';
-  const tot = r[7] || '0';
-
-  // Solo mostrar botón eliminar si es del usuario logueado
-  const puedeEliminar = usuarioActivo && usuario.toLowerCase() === usuarioActivo.toLowerCase();
-
-  return `<div class="row">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <strong>👤 ${escapeHTML(usuario)}</strong>
-      ${puedeEliminar ? `<button onclick="eliminarRegistro('${fecha}', '${usuario}')" style="background:none;border:0;color:#e00;cursor:pointer;font-size:18px;">🗑️</button>` : ""}
-    </div>
-    <small>📅 ${escapeHTML(fecha)}</small>
-    <div style="margin-top:8px">🙋‍♂️ ${h} &nbsp; 🙋‍♀️ ${hm} &nbsp; 🤝 ${am} &nbsp; 👧 ${ad} &nbsp; 🧒 ${ni}</div>
-    <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
-  </div>`;
-}).join('');
-
-  }catch(err){
-    console.error(err);
-    document.getElementById('listado').innerHTML = `<div class="row">⚠️ Error obteniendo datos. Revisa conexión.</div>`;
-  }finally{
-    showLoading(false);
-  }
+    const res=await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
+    const text=await res.text();let data;try{data=JSON.parse(text);}catch(e){data=[];}
+    if(!data||data.length<=1){listado.innerHTML=`<div class="row">⚠️ No hay registros en ${mes}.</div>`;showLoading(false);return;}
+    const filas=data.slice(1).reverse();
+    listado.innerHTML=filas.map(r=>{
+      const [usuario,fecha,h,hm,am,ad,ni,tot]=r;
+      const esPropio = usuarioGlobal && usuarioGlobal.toLowerCase()===String(usuario).toLowerCase();
+      return `<div class="row">
+        <strong>👤 ${escapeHTML(usuario)}</strong>
+        <small>📅 ${escapeHTML(fecha)}</small>
+        <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
+        <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
+        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarRegistro('${escapeHTML(usuario)}','${escapeHTML(fecha)}')">🗑️ Eliminar</button>`:''}
+      </div>`;
+    }).join('');
+  }catch(e){listado.innerHTML=`<div class="row">⚠️ Error obteniendo datos.</div>`;}finally{showLoading(false);}
 }
 
-/* ================ ELIMINAR ASISTENCIA ================ */
-/* ======== ELIMINAR UN REGISTRO ESPECÍFICO ======== */
-async function eliminarRegistro(fecha, usuario) {
-  if (!confirm(`¿Eliminar la asistencia de ${usuario} (${fecha})?`)) return;
-  try {
-    const res = await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
-    const text = await res.text();
-    alert(text.includes("ELIMINADA") ? "🗑️ Asistencia eliminada." : "⚠️ No se pudo eliminar.");
-    // refrescar vista actual
-    verAsistencia(document.getElementById("selectMes").value);
-  } catch (err) {
-    console.error(err);
-    alert("⚠️ Error al eliminar registro.");
-  }
+/* === ELIMINAR === */
+async function eliminarAsistencia(){
+  if(!usuarioGlobal) return alert("⚠️ Debes iniciar sesión.");
+  if(!confirm("¿Eliminar asistencias de los últimos 10 minutos?")) return;
+  try{
+    const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuarioGlobal)}`);
+    const text=await res.text();
+    if(text.startsWith("ELIMINADAS_")){alert("🗑️ "+text.replace("_"," "));}
+    else alert("ℹ️ "+text);
+  }catch(e){alert("⚠️ Error al eliminar.");}
+}
+async function eliminarRegistro(usuario,fecha){
+  if(!confirm(`¿Eliminar el registro de ${usuario} en ${fecha}?`)) return;
+  try{
+    const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
+    const text=await res.text();
+    if(text.includes("ELIMINADA")){alert("🗑️ Registro eliminado.");refrescarMes();}
+    else alert("⚠️ "+text);
+  }catch(e){alert("⚠️ Error al eliminar.");}
 }
 
-
-/* seguridad: escape HTML simple */
-function escapeHTML(s){ return (s+'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* inicialización */
-(function init(){
-  actualizarTotal();
-  // poblar select oculto inicialmente para evitar re-render
-  const select = document.getElementById('selectMes');
-  meses.forEach(m=>{
-    const opt = document.createElement('option'); opt.value = m; opt.text = m; select.appendChild(opt);
-  });
-  // establecer mes por defecto actual
-  select.value = mesActual;
-})();
+/* === HELPERS === */
+function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+(function init(){actualizarTotal();const select=document.getElementById('selectMes');meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});select.value=mesActual;})();
 </script>
 </body>
 </html>
-
