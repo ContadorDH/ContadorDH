@@ -31,29 +31,9 @@
     justify-content:space-between;
     padding:0 12px;
     font-weight:600;
-    position:relative;
   }
   header button{ background:none;border:0;color:#fff;font-size:20px;cursor:pointer }
   header .title{ font-size:1.05rem }
-
-  /* 🔵 Círculo de usuario */
-  #userCircle{
-    position:absolute;
-    top:10px;
-    right:10px;
-    width:42px;
-    height:42px;
-    background:#fff;
-    color:#0066ff;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:1rem;
-    box-shadow:0 2px 6px rgba(0,0,0,0.15);
-    cursor:pointer;
-  }
 
   #menuOverlay{
     position:fixed; inset:0; background:rgba(0,0,0,0.32); display:none; z-index:80;
@@ -80,20 +60,23 @@
   .card{
     width:92%; max-width:440px; background:var(--card);
     border-radius:var(--radius); padding:12px 14px; box-shadow:0 8px 20px rgba(12,30,60,0.06);
-    display:flex; justify-content:center; align-items:center; margin-bottom:0.8rem;
+    display:flex; align-items:center; justify-content:space-between;
   }
-  .controls{ display:flex; align-items:center; justify-content:space-between; width:100%; }
+  .label{ font-size:1rem; font-weight:600 }
+  .controls{ display:flex; align-items:center; gap:8px }
 
   .counterBtn{
     width:40px; height:40px; border-radius:10px; border:0; background:var(--primary); color:#fff;
     font-size:20px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer;
   }
+  .counterBtn.ghost{ background:transparent; color:var(--muted); border:1px solid #eee; width:36px; height:36px; border-radius:8px; font-size:18px; }
+
   .value{
     min-width:44px; text-align:center; font-weight:700; font-size:1.05rem;
   }
 
   .totalCard{
-    width:92%; max-width:440px; background:#fff;
+    width:92%; max-width:440px; background:linear-gradient(90deg,#fff,#fff);
     border-radius:var(--radius); padding:14px; text-align:center; font-weight:700; box-shadow:0 10px 28px rgba(2,20,80,0.04);
     font-size:1.1rem;
   }
@@ -109,6 +92,9 @@
     width:100%; max-width:820px; display:flex; gap:8px; align-items:center; justify-content:space-between;
     background:var(--primary); color:#fff; border-radius:10px; padding:10px;
   }
+  #verHeader .left{ display:flex; gap:10px; align-items:center }
+  #verHeader select{ padding:8px 10px; border-radius:8px; border:0; font-weight:600 }
+  #verHeader button{ background:transparent; border:0; color:#fff; font-size:18px; cursor:pointer; padding:6px 10px; border-radius:8px }
 
   #listado{
     width:92%; max-width:820px; margin-top:12px; display:flex; flex-direction:column; gap:8px;
@@ -134,6 +120,7 @@
     margin-top:12px; background:var(--primary); color:#fff; border:0; padding:10px 16px; border-radius:8px; cursor:pointer;
     font-weight:600;
   }
+
   .spinner{
     width:36px; height:36px; border-radius:50%; border:4px solid #e6eefc; border-top-color:var(--primary);
     animation:spin .9s linear infinite; margin-left:8px;
@@ -157,9 +144,7 @@
 <header>
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
   <div class="title">📋 Asistencia Célula</div>
-
-  <!-- 🔵 Círculo usuario -->
-  <span id="userCircle" title="Perfil"></span>
+  <div style="width:28px"></div>
 </header>
 
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
@@ -174,61 +159,11 @@
 </nav>
 
 <main id="principal">
-  <div class="card">
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('hermanos', -1)">−</button>
-      <div style="flex:1;text-align:center;">
-        <div class="label">Hermanos</div>
-        <div class="value" id="hermanos">0</div>
-      </div>
-      <button class="counterBtn" onclick="changeCount('hermanos', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('hermanas', -1)">−</button>
-      <div style="flex:1;text-align:center;">
-        <div class="label">Hermanas</div>
-        <div class="value" id="hermanas">0</div>
-      </div>
-      <button class="counterBtn" onclick="changeCount('hermanas', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('amigos', -1)">−</button>
-      <div style="flex:1;text-align:center;">
-        <div class="label">Amigos</div>
-        <div class="value" id="amigos">0</div>
-      </div>
-      <button class="counterBtn" onclick="changeCount('amigos', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('adolescentes', -1)">−</button>
-      <div style="flex:1;text-align:center;">
-        <div class="label">Adolescentes</div>
-        <div class="value" id="adolescentes">0</div>
-      </div>
-      <button class="counterBtn" onclick="changeCount('adolescentes', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="controls">
-      <button class="counterBtn" onclick="changeCount('niños', -1)">−</button>
-      <div style="flex:1;text-align:center;">
-        <div class="label">Niños</div>
-        <div class="value" id="niños">0</div>
-      </div>
-      <button class="counterBtn" onclick="changeCount('niños', 1)">+</button>
-    </div>
-  </div>
-
+  <div class="card"><div class="label">Hermanos</div><div class="controls"><button class="counterBtn" onclick="changeCount('hermanos', -1)">−</button><div class="value" id="hermanos">0</div><button class="counterBtn" onclick="changeCount('hermanos', 1)">+</button></div></div>
+  <div class="card"><div class="label">Hermanas</div><div class="controls"><button class="counterBtn" onclick="changeCount('hermanas', -1)">−</button><div class="value" id="hermanas">0</div><button class="counterBtn" onclick="changeCount('hermanas', 1)">+</button></div></div>
+  <div class="card"><div class="label">Amigos</div><div class="controls"><button class="counterBtn" onclick="changeCount('amigos', -1)">−</button><div class="value" id="amigos">0</div><button class="counterBtn" onclick="changeCount('amigos', 1)">+</button></div></div>
+  <div class="card"><div class="label">Adolescentes</div><div class="controls"><button class="counterBtn" onclick="changeCount('adolescentes', -1)">−</button><div class="value" id="adolescentes">0</div><button class="counterBtn" onclick="changeCount('adolescentes', 1)">+</button></div></div>
+  <div class="card"><div class="label">Niños</div><div class="controls"><button class="counterBtn" onclick="changeCount('niños', -1)">−</button><div class="value" id="niños">0</div><button class="counterBtn" onclick="changeCount('niños', 1)">+</button></div></div>
   <div class="totalCard">Total asistencia: <span id="total">0</span></div>
 </main>
 
@@ -258,31 +193,28 @@ function iniciarSesion(){
   localStorage.setItem("usuarioCelula", nombre);
   usuarioGlobal = nombre;
   document.getElementById("loginScreen").style.display="none";
-  actualizarCirculoUsuario();
+  // close menu if open
+  const menu = document.getElementById('menu');
+  const overlay = document.getElementById('menuOverlay');
+  if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
 }
 function cerrarSesion(){
   if(confirm("¿Cerrar sesión?")){
     localStorage.removeItem("usuarioCelula");
     usuarioGlobal="";
     document.getElementById("loginScreen").style.display="flex";
-    document.getElementById("userCircle").textContent="";
+    // close menu if open
+    const menu=document.getElementById('menu');
+    const overlay=document.getElementById('menuOverlay');
+    if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
   }
-}
-function actualizarCirculoUsuario(){
-  const circle=document.getElementById("userCircle");
-  if(usuarioGlobal){
-    const partes=usuarioGlobal.trim().split(" ");
-    const iniciales=partes.map(p=>p[0].toUpperCase()).join("").slice(0,2);
-    circle.textContent=iniciales;
-  }else circle.textContent="";
 }
 if(usuarioGlobal){
   document.getElementById("loginScreen").style.display="none";
-  actualizarCirculoUsuario();
 }
 
 /* === MENÚ === */
-function toggleMenu(){ const menu=document.getElementById('menu');const overlay=document.getElementById('menuOverlay');menu.classList.toggle('active');overlay.classList.toggle('active');}
+function toggleMenu(){ const menu=document.getElementById('menu');const overlay=document.getElementById('menuOverlay');menu.classList.toggle('active');overlay.classList.toggle('active');menu.setAttribute('aria-hidden',!menu.classList.contains('active')); }
 function closeMenuIfOpen(evt){ const menu=document.getElementById('menu'); if(menu.classList.contains('active')) toggleMenu(); }
 
 /* === CONTADORES === */
@@ -306,30 +238,65 @@ async function subirAsistencia(){
 }
 
 /* === VER === */
+function abrirVerPantalla(){ const menu=document.getElementById('menu');if(menu.classList.contains('active'))toggleMenu();const select=document.getElementById('selectMes');if(select.options.length===0){meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});}select.value=mesActual;document.getElementById('tituloMes').textContent='Asistencia de: '+select.value;document.getElementById('verPantalla').classList.add('active');verAsistencia(select.value);}
+function cerrarVerPantalla(){document.getElementById('verPantalla').classList.remove('active');}
+function mesSeleccionado(){const select=document.getElementById('selectMes');mesActual=select.value;document.getElementById('tituloMes').textContent='Asistencia de: '+mesActual;verAsistencia(mesActual);}
+function refrescarMes(){verAsistencia(document.getElementById('selectMes').value);}
+function showLoading(s){document.getElementById('loadingIndicator').style.display=s?'block':'none';}
+
 async function verAsistencia(mes){
+  showLoading(true);
   const listado=document.getElementById('listado');listado.innerHTML='';
   try{
     const res=await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
     const text=await res.text();let data;try{data=JSON.parse(text);}catch(e){data=[];}
-    if(!data||data.length<=1){listado.innerHTML=`<div class="row">⚠️ No hay registros en ${mes}.</div>`;return;}
+    if(!data||data.length<=1){listado.innerHTML=`<div class="row">⚠️ No hay registros en ${mes}.</div>`;showLoading(false);return;}
     const filas=data.slice(1).reverse();
     listado.innerHTML=filas.map(r=>{
       const [usuario,fecha,h,hm,am,ad,ni,tot]=r;
       const esPropio = usuarioGlobal && usuarioGlobal.toLowerCase()===String(usuario).toLowerCase();
+      // Use encodeURIComponent to safely pass parameters to eliminarRegistro via onclick
+      const usuarioEsc = escapeHTML(String(usuario || ''));
+      const fechaEsc = escapeHTML(String(fecha || ''));
+      const usuarioEnc = encodeURIComponent(String(usuario || ''));
+      const fechaEnc = encodeURIComponent(String(fecha || ''));
       return `<div class="row">
-        <strong>👤 ${usuario}</strong>
-        <small>📅 ${fecha}</small>
+        <strong>👤 ${usuarioEsc}</strong>
+        <small>📅 ${fechaEsc}</small>
         <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
-        <small>🔢 Total: <strong>${tot}</strong></small>
-        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarRegistro('${usuario}','${fecha}')">🗑️ Eliminar</button>`:''}
+        <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
+        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarRegistro('${usuarioEnc}','${fechaEnc}')">🗑️ Eliminar</button>`:''}
       </div>`;
     }).join('');
-  }catch(e){listado.innerHTML=`<div class="row">⚠️ Error obteniendo datos.</div>`;}
+  }catch(e){listado.innerHTML=`<div class="row">⚠️ Error obteniendo datos.</div>`;}finally{showLoading(false);}
+}
+
+/* === ELIMINAR === */
+async function eliminarAsistencia(){
+  if(!usuarioGlobal) return alert("⚠️ Debes iniciar sesión.");
+  if(!confirm("¿Eliminar asistencias de los últimos 10 minutos?")) return;
+  try{
+    const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuarioGlobal)}`);
+    const text=await res.text();
+    if(text.startsWith("ELIMINADAS_")){const n=text.split('_')[1]||''; alert("🗑️ Se eliminaron "+n+" fila(s).");}
+    else alert("ℹ️ "+text);
+  }catch(e){alert("⚠️ Error al eliminar.");}
+}
+async function eliminarRegistro(usuarioEnc,fechaEnc){
+  const usuario = decodeURIComponent(usuarioEnc);
+  const fecha = decodeURIComponent(fechaEnc);
+  if(!confirm(`¿Eliminar el registro de ${usuario} en ${fecha}?`)) return;
+  try{
+    const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
+    const text=await res.text();
+    if(text.includes("ELIMINADA") || text.startsWith("ELIMINADAS_") ){ alert("🗑️ Registro eliminado."); refrescarMes(); }
+    else alert("⚠️ "+text);
+  }catch(e){alert("⚠️ Error al eliminar.");}
 }
 
 /* === HELPERS === */
 function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-(function init(){actualizarTotal();if(usuarioGlobal)actualizarCirculoUsuario();})();
+(function init(){actualizarTotal();const select=document.getElementById('selectMes');meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});select.value=mesActual; /* show login if needed */ if(usuarioGlobal){ document.getElementById("loginScreen").style.display="none"; } else { document.getElementById("loginScreen").style.display="flex"; } })();
 </script>
 </body>
 </html>
