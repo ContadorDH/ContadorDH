@@ -11,8 +11,6 @@
     background: #f4f6fb;
     color: #333;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
   }
 
@@ -37,13 +35,13 @@
   }
 
   main {
-    flex: 1;
+    height: calc(100vh - 64px);
     padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
   }
 
   .counter {
@@ -97,6 +95,14 @@
   }
 
   /* Menú lateral */
+  #menuOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    z-index: 99;
+  }
+
   #menu {
     position: fixed;
     top: 0;
@@ -113,13 +119,14 @@
   }
 
   #menu.active { left: 0; }
+  #menuOverlay.active { display: block; }
 
   #menu button {
     background: none;
     color: #333;
     font-size: 1.1rem;
     text-align: left;
-    border-radius: 0;
+    border: none;
     border-bottom: 1px solid #eee;
     width: 100%;
     padding: 1rem 1.5rem;
@@ -140,6 +147,34 @@
     align-items: center;
     overflow-y: auto;
     z-index: 50;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.4s ease;
+  }
+
+  #verPantalla.active {
+    display: flex;
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  #verHeader {
+    width: 100%;
+    background: #0066ff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+
+  #verHeader button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
   }
 
   #listado {
@@ -153,19 +188,6 @@
     font-size: 0.9rem;
   }
 
-  #btnAtras {
-    align-self: flex-start;
-    margin: 1rem;
-    background: #0066ff;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-
-  #btnAtras:hover { background: #004ecc; }
-
 </style>
 </head>
 <body>
@@ -175,6 +197,9 @@
   <span>📋 Asistencia Célula</span>
   <span style="width:24px;"></span>
 </header>
+
+<!-- Fondo clickeable para cerrar menú -->
+<div id="menuOverlay" onclick="toggleMenu()"></div>
 
 <!-- Menú lateral -->
 <div id="menu">
@@ -225,16 +250,22 @@
 
 <!-- Pantalla Ver -->
 <div id="verPantalla">
-  <button id="btnAtras" onclick="cerrarVerPantalla()">← Atrás</button>
+  <div id="verHeader">
+    <button onclick="cerrarVerPantalla()">←</button>
+    <span id="tituloMes">Asistencia</span>
+    <button onclick="buscarNuevoMes()">🔍</button>
+  </div>
   <div id="listado"></div>
 </div>
 
 <script>
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuad6LbOg5k2TFzphjhPTm-NwMJwURzhfFPsEb8a5oB9KXuXIhWxe5QzrR2xLnDjYVlA/exec";
 const datos = { hermanos: 0, hermanas: 0, amigos: 0, adolescentes: 0, niños: 0 };
+let mesActual = "";
 
 function toggleMenu() {
   document.getElementById('menu').classList.toggle('active');
+  document.getElementById('menuOverlay').classList.toggle('active');
 }
 
 function changeCount(tipo, delta) {
@@ -276,17 +307,25 @@ async function subirAsistencia() {
 
 function abrirVerPantalla() {
   toggleMenu();
-  document.getElementById("verPantalla").style.display = "flex";
-  verAsistencia();
+  document.getElementById("verPantalla").classList.add("active");
+  buscarNuevoMes();
 }
 
 function cerrarVerPantalla() {
-  document.getElementById("verPantalla").style.display = "none";
+  const pantalla = document.getElementById("verPantalla");
+  pantalla.classList.remove("active");
+  setTimeout(()=> pantalla.style.display = "none", 400);
 }
 
-async function verAsistencia() {
-  const mes = prompt("📅 Ingresa el nombre del mes (Ej: Octubre):");
+async function buscarNuevoMes() {
+  const mes = prompt("📅 Ingresa el nombre del mes (Ej: Octubre):", mesActual || "");
   if (!mes) return;
+  mesActual = mes;
+  document.getElementById("tituloMes").textContent = "Asistencia de: " + mes;
+  await verAsistencia(mes);
+}
+
+async function verAsistencia(mes) {
   try {
     const res = await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
     const data = await res.json();
@@ -295,10 +334,9 @@ async function verAsistencia() {
       lista.innerHTML = "<p>⚠️ No hay registros en ese mes.</p>";
       return;
     }
-    lista.innerHTML = "<b>Asistencias registradas:</b><br><br>" +
-      data.slice(1).map(r =>
-        `👤 ${r[0]}<br>📅 ${r[1]}<br>🙋‍♂️ ${r[2]} 🙋‍♀️ ${r[3]} 🤝 ${r[4]} 👧 ${r[5]} 🧒 ${r[6]}<br>🔢 Total: ${r[7]}<hr>`
-      ).join("");
+    lista.innerHTML = data.slice(1).map(r =>
+      `👤 ${r[0]}<br>📅 ${r[1]}<br>🙋‍♂️ ${r[2]} 🙋‍♀️ ${r[3]} 🤝 ${r[4]} 👧 ${r[5]} 🧒 ${r[6]}<br>🔢 Total: ${r[7]}<hr>`
+    ).join("");
   } catch {
     alert("⚠️ No se pudo obtener la asistencia.");
   }
