@@ -13,7 +13,9 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
+
   header {
     background: #0066ff;
     color: white;
@@ -21,7 +23,19 @@
     padding: 1rem;
     font-size: 1.4rem;
     font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+
+  header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
   main {
     flex: 1;
     padding: 1rem;
@@ -29,7 +43,9 @@
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
+    transition: all 0.3s;
   }
+
   .counter {
     width: 90%;
     max-width: 400px;
@@ -42,12 +58,10 @@
     align-items: center;
     margin-bottom: 0.8rem;
   }
+
   .counter h3 { margin: 0; font-size: 1.1rem; }
-  .controls {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+  .controls { display: flex; align-items: center; gap: 0.5rem; }
+
   button {
     border: none;
     background: #0066ff;
@@ -59,13 +73,16 @@
     cursor: pointer;
     transition: 0.2s;
   }
+
   button:hover { background: #004ecc; }
+
   .value {
     width: 40px;
     text-align: center;
     font-weight: 600;
     font-size: 1.1rem;
   }
+
   .total {
     background: #fff;
     padding: 1rem;
@@ -78,43 +95,96 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin-top: 0.5rem;
   }
-  footer {
+
+  /* Menú lateral */
+  #menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 240px;
+    height: 100%;
     background: #fff;
-    border-top: 1px solid #ddd;
+    box-shadow: 4px 0 8px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    z-index: 100;
     display: flex;
-    justify-content: space-around;
-    padding: 0.6rem;
+    flex-direction: column;
+    padding-top: 2rem;
   }
-  footer button {
+
+  #menu.active { left: 0; }
+
+  #menu button {
     background: none;
     color: #333;
-    font-size: 0.95rem;
-    border-radius: 8px;
-    padding: 0.4rem 0.8rem;
+    font-size: 1.1rem;
+    text-align: left;
+    border-radius: 0;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    padding: 1rem 1.5rem;
   }
-  footer button:hover {
-    background: #e8e8e8;
+
+  #menu button:hover {
+    background: #0066ff;
+    color: white;
   }
+
+  /* Pantalla ver asistencia */
+  #verPantalla {
+    position: absolute;
+    inset: 0;
+    background: #f4f6fb;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    z-index: 50;
+  }
+
   #listado {
     width: 90%;
     max-width: 400px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    padding: 0.5rem;
+    padding: 0.8rem;
     margin-top: 1rem;
-    display: none;
-    font-size: 0.85rem;
-    overflow-y: auto;
-    max-height: 60vh;
+    font-size: 0.9rem;
   }
+
+  #btnAtras {
+    align-self: flex-start;
+    margin: 1rem;
+    background: #0066ff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  #btnAtras:hover { background: #004ecc; }
+
 </style>
 </head>
 <body>
 
-<header>📋 Asistencia Célula</header>
+<header>
+  <button onclick="toggleMenu()">☰</button>
+  <span>📋 Asistencia Célula</span>
+  <span style="width:24px;"></span>
+</header>
 
-<main>
+<!-- Menú lateral -->
+<div id="menu">
+  <button onclick="subirAsistencia()">📤 Subir asistencia</button>
+  <button onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
+  <button onclick="eliminarAsistencia()">🗑️ Eliminar registros</button>
+</div>
+
+<!-- Pantalla principal -->
+<main id="principal">
   <div class="counter"><h3>Hermanos</h3>
     <div class="controls">
       <button onclick="changeCount('hermanos', -1)">−</button>
@@ -150,28 +220,22 @@
       <button onclick="changeCount('niños', 1)">+</button>
     </div>
   </div>
-
   <div class="total">Total asistencia: <span id="total">0</span></div>
-
-  <div id="listado"></div>
 </main>
 
-<footer>
-  <button onclick="subirAsistencia()">📤 Subir</button>
-  <button onclick="verAsistencia()">👁️ Ver</button>
-  <button onclick="eliminarAsistencia()">🗑️ Eliminar</button>
-</footer>
+<!-- Pantalla Ver -->
+<div id="verPantalla">
+  <button id="btnAtras" onclick="cerrarVerPantalla()">← Atrás</button>
+  <div id="listado"></div>
+</div>
 
 <script>
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuad6LbOg5k2TFzphjhPTm-NwMJwURzhfFPsEb8a5oB9KXuXIhWxe5QzrR2xLnDjYVlA/exec";
+const datos = { hermanos: 0, hermanas: 0, amigos: 0, adolescentes: 0, niños: 0 };
 
-const datos = {
-  hermanos: 0,
-  hermanas: 0,
-  amigos: 0,
-  adolescentes: 0,
-  niños: 0
-};
+function toggleMenu() {
+  document.getElementById('menu').classList.toggle('active');
+}
 
 function changeCount(tipo, delta) {
   datos[tipo] = Math.max(0, datos[tipo] + delta);
@@ -185,75 +249,72 @@ function actualizarTotal() {
 }
 
 async function subirAsistencia() {
+  toggleMenu();
   const total = Object.values(datos).reduce((a,b)=>a+b,0);
   if (total === 0) return alert("❗ No hay personas registradas.");
-
   const usuario = prompt("👤 Ingresa tu nombre:");
   if (!usuario) return alert("❗ Debes ingresar un nombre.");
-
   const fecha = new Date().toLocaleString("es-CO", {
     day: "2-digit", month: "2-digit", year: "numeric",
     hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
   });
-
   const params = new URLSearchParams({
-    usuario,
-    fecha,
-    hermanos: datos.hermanos,
-    hermanas: datos.hermanas,
-    amigos: datos.amigos,
-    adolescentes: datos.adolescentes,
+    usuario, fecha,
+    hermanos: datos.hermanos, hermanas: datos.hermanas,
+    amigos: datos.amigos, adolescentes: datos.adolescentes,
     niños: datos.niños,
     total
   });
-
   try {
     const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
     const text = await res.text();
     alert(text.includes("OK") ? "✅ Asistencia registrada." : "⚠️ No se pudo registrar.\n" + text);
-  } catch (err) {
-    console.error(err);
+  } catch {
     alert("⚠️ Error de conexión con el servidor.");
   }
+}
+
+function abrirVerPantalla() {
+  toggleMenu();
+  document.getElementById("verPantalla").style.display = "flex";
+  verAsistencia();
+}
+
+function cerrarVerPantalla() {
+  document.getElementById("verPantalla").style.display = "none";
 }
 
 async function verAsistencia() {
   const mes = prompt("📅 Ingresa el nombre del mes (Ej: Octubre):");
   if (!mes) return;
-
   try {
     const res = await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
     const data = await res.json();
-
+    const lista = document.getElementById("listado");
     if (data.length <= 1) {
-      alert("⚠️ No hay registros en ese mes.");
+      lista.innerHTML = "<p>⚠️ No hay registros en ese mes.</p>";
       return;
     }
-
-    const lista = document.getElementById("listado");
     lista.innerHTML = "<b>Asistencias registradas:</b><br><br>" +
       data.slice(1).map(r =>
         `👤 ${r[0]}<br>📅 ${r[1]}<br>🙋‍♂️ ${r[2]} 🙋‍♀️ ${r[3]} 🤝 ${r[4]} 👧 ${r[5]} 🧒 ${r[6]}<br>🔢 Total: ${r[7]}<hr>`
       ).join("");
-    lista.style.display = "block";
-  } catch (err) {
-    console.error(err);
+  } catch {
     alert("⚠️ No se pudo obtener la asistencia.");
   }
 }
 
 async function eliminarAsistencia() {
+  toggleMenu();
   if (!confirm("⚠️ ¿Eliminar asistencias de los últimos 10 minutos?")) return;
   try {
     const res = await fetch(`${URL_SCRIPT}?accion=eliminar`);
     const text = await res.text();
     alert(text.includes("ELIMINADAS") ? "🗑️ Asistencias eliminadas." : "⚠️ No se eliminaron registros recientes.");
-  } catch (err) {
-    console.error(err);
+  } catch {
     alert("⚠️ Error de conexión al eliminar.");
   }
 }
 </script>
-
 </body>
 </html>
