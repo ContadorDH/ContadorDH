@@ -65,26 +65,26 @@ header .title {
 
 
 
-    #menuOverlay{
+     #menuOverlay{
     position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; z-index:80;
     backdrop-filter: blur(8px);
   }
   #menuOverlay.active{ display:block; }
 
   #menu{
-    position:fixed; top:0; left:-300px; width:300px; height:100%; 
+    position:fixed; top:0; left:-240px; width:240px; height:100%; 
     background:linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    box-shadow:6px 0 28px rgba(0,0,0,0.15); 
-    transition: left .28s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index:90;
-    padding:28px 0 20px; display:flex; flex-direction:column;
+    box-shadow:4px 0 20px rgba(0,0,0,0.12); 
+    transition: left .25s ease; z-index:90;
+    padding:24px 0 16px; display:flex; flex-direction:column;
   }
   #menu.active{ left:0; }
   #menu .item{
-    padding:18px 24px; margin:0 8px; border-radius:12px; 
-    background:transparent; text-align:left; font-size:1.1rem; 
-    color:#1e293b; border:0; cursor:pointer; margin-bottom:2px;
-    font-weight:500; display:flex; align-items:center; gap:14px;
-    transition: all .2s ease; position:relative; overflow:hidden;
+    padding:16px 16px; margin:0 4px; border-radius:10px; 
+    background:transparent; text-align:left; font-size:1rem; 
+    color:#1e293b; border:0; cursor:pointer; margin-bottom:1px;
+    font-weight:500; display:flex; align-items:center; gap:10px;
+    transition: all .18s ease; position:relative; overflow:hidden;
     touch-action: manipulation;
   }
   #menu .item:active{
@@ -92,8 +92,8 @@ header .title {
     color:#fff; transform: scale(0.98);
   }
   #menu .item::before{
-    content:''; position:absolute; left:0; top:0; bottom:0; width:4px; 
-    background:var(--primary); transform: scaleY(0); transition: transform .2s ease;
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px; 
+    background:var(--primary); transform: scaleY(0); transition: transform .18s ease;
   }
   #menu .item:hover, #menu .item:focus{
     background:linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -539,5 +539,6 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
 
 
