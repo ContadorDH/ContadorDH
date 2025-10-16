@@ -35,6 +35,19 @@
   header button{ background:none;border:0;color:#fff;font-size:20px;cursor:pointer }
   header .title{ font-size:1.05rem }
 
+  /* === Centrar título del header correctamente === */
+header {
+  position: relative;
+}
+
+header .title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+
+
   #menuOverlay{
     position:fixed; inset:0; background:rgba(0,0,0,0.32); display:none; z-index:80;
   }
@@ -147,6 +160,31 @@
 </head>
 <body>
 
+<!-- Popup de confirmación -->
+<div id="popupConfirm" style="
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none; align-items:center; justify-content:center;
+  z-index:210;">
+  <div style="
+    background:#fff;
+    border-radius:16px;
+    padding:24px 28px;
+    text-align:center;
+    box-shadow:0 6px 26px rgba(0,0,0,0.15);
+    width:80%; max-width:300px;
+    animation:popupFade .3s ease;">
+    <h3 id="popupConfirmTitle" style="margin:0 0 10px;font-size:1.1rem;color:#222;">Confirmar</h3>
+    <p id="popupConfirmMsg" style="font-size:1rem;color:#444;margin:0 0 18px;"></p>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button id="popupConfirmNo" style="background:#ccc;color:#222;border:0;padding:8px 14px;border-radius:10px;font-weight:600;cursor:pointer;">Cancelar</button>
+      <button id="popupConfirmYes" style="background:#0066ff;color:#fff;border:0;padding:8px 14px;border-radius:10px;font-weight:600;cursor:pointer;">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+
+  
   <!-- Popup de usuario -->
 <div id="popupUsuario" style="
   position:fixed; inset:0;
@@ -309,21 +347,70 @@ function closeMenuIfOpen(evt){ const menu=document.getElementById('menu'); if(me
 function changeCount(tipo, delta){ datos[tipo]=Math.max(0,(datos[tipo]||0)+delta); document.getElementById(tipo).textContent=datos[tipo]; actualizarTotal(); }
 function actualizarTotal(){ const total=Object.values(datos).reduce((a,b)=>a+b,0); document.getElementById('total').textContent=total; }
 
-/* === SUBIR === */
+/* === POPUP MODERNO === */
+function mostrarPopupConfirm(titulo, mensaje, callback){
+  const popup = document.getElementById('popupConfirm');
+  document.getElementById('popupConfirmTitle').textContent = titulo || "Confirmar";
+  document.getElementById('popupConfirmMsg').textContent = mensaje || "";
+  popup.style.display = "flex";
+
+  const btnYes = document.getElementById('popupConfirmYes');
+  const btnNo = document.getElementById('popupConfirmNo');
+
+  const cerrar = () => { popup.style.display = "none"; btnYes.onclick = null; btnNo.onclick = null; };
+  btnNo.onclick = cerrar;
+  btnYes.onclick = () => { cerrar(); if(callback) callback(); };
+}
+
+/* === SUBIR ASISTENCIA MEJORADA === */
 async function subirAsistencia(){
   if(!usuarioGlobal) return alert("⚠️ Debes iniciar sesión primero.");
-  const total=Object.values(datos).reduce((a,b)=>a+b,0);
-  if(total===0) return alert('❗ No hay personas registradas.');
-  const fecha=new Date().toLocaleString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
-  const params=new URLSearchParams({usuario:usuarioGlobal,fecha,hermanos:datos.hermanos,hermanas:datos.hermanas,amigos:datos.amigos,adolescentes:datos.adolescentes,niños:datos.niños,total});
-  try{
-    const res=await fetch(`${URL_SCRIPT}?${params.toString()}`);
-    const text=await res.text();
-    if(text.includes('OK')) alert('✅ Asistencia registrada.');
-    else if(text.includes('DUPLICADO')) alert('⚠️ Ya se envió recientemente.');
-    else alert('ℹ️ Respuesta del servidor: '+text);
-  }catch(e){alert('⚠️ Error de conexión.');}
+  const total = Object.values(datos).reduce((a,b)=>a+b,0);
+  if(total === 0) return mostrarPopupConfirm("Sin registros", "No hay personas registradas.", null);
+
+  // 🔹 cerrar menú si está abierto
+  const menu = document.getElementById('menu');
+  const overlay = document.getElementById('menuOverlay');
+  if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
+
+  // 🔹 confirmar envío
+  mostrarPopupConfirm("Confirmar envío", "¿Deseas subir esta asistencia?", async () => {
+    const fecha = new Date().toLocaleString('es-CO', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+    });
+
+    const params = new URLSearchParams({
+      usuario: usuarioGlobal,
+      fecha,
+      hermanos: datos.hermanos,
+      hermanas: datos.hermanas,
+      amigos: datos.amigos,
+      adolescentes: datos.adolescentes,
+      niños: datos.niños,
+      total
+    });
+
+    try {
+      const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
+      const text = await res.text();
+
+      if (text.includes('OK')) {
+        mostrarPopupConfirm("✅ Enviado", "Asistencia registrada correctamente.", null);
+        // 🔄 Reiniciar contadores
+        for (const k in datos) { datos[k] = 0; document.getElementById(k).textContent = 0; }
+        document.getElementById('total').textContent = 0;
+      } else if (text.includes('DUPLICADO')) {
+        mostrarPopupConfirm("⚠️ Duplicado", "Ya se envió recientemente.", null);
+      } else {
+        mostrarPopupConfirm("ℹ️ Servidor", text, null);
+      }
+    } catch (e) {
+      mostrarPopupConfirm("⚠️ Error", "No se pudo conectar con el servidor.", null);
+    }
+  });
 }
+
 
 /* === VER === */
 function abrirVerPantalla(){ const menu=document.getElementById('menu');if(menu.classList.contains('active'))toggleMenu();const select=document.getElementById('selectMes');if(select.options.length===0){meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});}select.value=mesActual;document.getElementById('tituloMes').textContent='Asistencia de: '+select.value;document.getElementById('verPantalla').classList.add('active');verAsistencia(select.value);}
@@ -388,6 +475,7 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
 
 
 
