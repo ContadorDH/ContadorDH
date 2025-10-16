@@ -8,7 +8,7 @@
   body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    background: #f7f9fc;
+    background: #f4f6fb;
     color: #333;
     height: 100vh;
     display: flex;
@@ -42,10 +42,7 @@
     align-items: center;
     margin-bottom: 0.8rem;
   }
-  .counter h3 {
-    margin: 0;
-    font-size: 1.1rem;
-  }
+  .counter h3 { margin: 0; font-size: 1.1rem; }
   .controls {
     display: flex;
     align-items: center;
@@ -86,17 +83,30 @@
     border-top: 1px solid #ddd;
     display: flex;
     justify-content: space-around;
-    padding: 0.5rem;
+    padding: 0.6rem;
   }
   footer button {
     background: none;
     color: #333;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     border-radius: 8px;
     padding: 0.4rem 0.8rem;
   }
   footer button:hover {
     background: #e8e8e8;
+  }
+  #listado {
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 0.5rem;
+    margin-top: 1rem;
+    display: none;
+    font-size: 0.85rem;
+    overflow-y: auto;
+    max-height: 60vh;
   }
 </style>
 </head>
@@ -142,10 +152,14 @@
   </div>
 
   <div class="total">Total asistencia: <span id="total">0</span></div>
+
+  <div id="listado"></div>
 </main>
 
 <footer>
   <button onclick="subirAsistencia()">📤 Subir</button>
+  <button onclick="verAsistencia()">👁️ Ver</button>
+  <button onclick="eliminarAsistencia()">🗑️ Eliminar</button>
 </footer>
 
 <script>
@@ -196,11 +210,47 @@ async function subirAsistencia() {
   try {
     const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
     const text = await res.text();
-    console.log("Respuesta:", text);
-    alert(text.includes("OK") ? "✅ Asistencia registrada." : "⚠️ No se pudo registrar.");
+    alert(text.includes("OK") ? "✅ Asistencia registrada." : "⚠️ No se pudo registrar.\n" + text);
   } catch (err) {
     console.error(err);
     alert("⚠️ Error de conexión con el servidor.");
+  }
+}
+
+async function verAsistencia() {
+  const mes = prompt("📅 Ingresa el nombre del mes (Ej: Octubre):");
+  if (!mes) return;
+
+  try {
+    const res = await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
+    const data = await res.json();
+
+    if (data.length <= 1) {
+      alert("⚠️ No hay registros en ese mes.");
+      return;
+    }
+
+    const lista = document.getElementById("listado");
+    lista.innerHTML = "<b>Asistencias registradas:</b><br><br>" +
+      data.slice(1).map(r =>
+        `👤 ${r[0]}<br>📅 ${r[1]}<br>🙋‍♂️ ${r[2]} 🙋‍♀️ ${r[3]} 🤝 ${r[4]} 👧 ${r[5]} 🧒 ${r[6]}<br>🔢 Total: ${r[7]}<hr>`
+      ).join("");
+    lista.style.display = "block";
+  } catch (err) {
+    console.error(err);
+    alert("⚠️ No se pudo obtener la asistencia.");
+  }
+}
+
+async function eliminarAsistencia() {
+  if (!confirm("⚠️ ¿Eliminar asistencias de los últimos 10 minutos?")) return;
+  try {
+    const res = await fetch(`${URL_SCRIPT}?accion=eliminar`);
+    const text = await res.text();
+    alert(text.includes("ELIMINADAS") ? "🗑️ Asistencias eliminadas." : "⚠️ No se eliminaron registros recientes.");
+  } catch (err) {
+    console.error(err);
+    alert("⚠️ Error de conexión al eliminar.");
   }
 }
 </script>
