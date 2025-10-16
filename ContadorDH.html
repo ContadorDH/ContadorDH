@@ -22,46 +22,48 @@
     height:100vh;
     overflow:hidden;
   }
-
   /* === Header moderno y centrado === */
-  header {
-    position: relative;
-    height: 64px;
-    background: var(--primary);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 12px;
-    font-weight: 600;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
+header {
+  position: relative;
+  height: 64px;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
 
-  header button {
-    background: none;
-    border: 0;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-  }
+header button {
+  background: none;
+  border: 0;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
 
-  header .title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
-    animation: fadeInTitle 0.6s ease-in-out;
-  }
+header .title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap; /* ✅ Mantiene en una sola línea */
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  animation: fadeInTitle 0.6s ease-in-out;
+}
 
-  @keyframes fadeInTitle {
-    from { opacity: 0; transform: translateX(-50%) translateY(-5px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-  }
+/* ✨ Animación elegante */
+@keyframes fadeInTitle {
+  from { opacity: 0; transform: translateX(-50%) translateY(-5px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+
 
   #menuOverlay{
     position:fixed; inset:0; background:rgba(0,0,0,0.32); display:none; z-index:80;
@@ -88,10 +90,10 @@
   .card{
     width:92%; max-width:440px; background:var(--card);
     border-radius:var(--radius); padding:12px 14px; box-shadow:0 8px 20px rgba(12,30,60,0.06);
-    display:flex; flex-direction:column; gap:8px;
+    display:flex; align-items:center; justify-content:space-between;
   }
-  .label{ font-size:1rem; font-weight:600; text-align:center; }
-  .controls{ display:flex; align-items:center; gap:8px; justify-content:center; }
+  .label{ font-size:1rem; font-weight:600 }
+  .controls{ display:flex; align-items:center; gap:8px }
 
   .counterBtn{
     width:40px; height:40px; border-radius:10px; border:0; background:var(--primary); color:#fff;
@@ -155,17 +157,40 @@
   }
   @keyframes spin{ to{ transform:rotate(360deg) } }
 
-  @keyframes popupFade {
-    from { transform:scale(0.9); opacity:0; }
-    to { transform:scale(1); opacity:1; }
+  /* Centrar los títulos de los contadores */
+  .card {
+    flex-direction: column;
+    gap: 8px;
   }
+  .card .label {
+    text-align: center;
+    width: 100%;
+  }
+
+
+  @keyframes popupFade {
+  from { transform:scale(0.9); opacity:0; }
+  to { transform:scale(1); opacity:1; }
+}
+  
 </style>
 </head>
 <body>
 
 <!-- Popup de confirmación -->
-<div id="popupConfirm" style="position:fixed; inset:0; background:rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; z-index:210;">
-  <div style="background:#fff; border-radius:16px; padding:24px 28px; text-align:center; box-shadow:0 6px 26px rgba(0,0,0,0.15); width:80%; max-width:300px; animation:popupFade .3s ease;">
+<div id="popupConfirm" style="
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none; align-items:center; justify-content:center;
+  z-index:210;">
+  <div style="
+    background:#fff;
+    border-radius:16px;
+    padding:24px 28px;
+    text-align:center;
+    box-shadow:0 6px 26px rgba(0,0,0,0.15);
+    width:80%; max-width:300px;
+    animation:popupFade .3s ease;">
     <h3 id="popupConfirmTitle" style="margin:0 0 10px;font-size:1.1rem;color:#222;">Confirmar</h3>
     <p id="popupConfirmMsg" style="font-size:1rem;color:#444;margin:0 0 18px;"></p>
     <div style="display:flex;gap:10px;justify-content:center;">
@@ -175,12 +200,46 @@
   </div>
 </div>
 
-<!-- Popup de usuario -->
-<div id="popupUsuario" style="position:fixed; inset:0; background:rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; z-index:200;">
-  <div style="background:#fff; border-radius:16px; padding:22px 28px; text-align:center; box-shadow:0 6px 26px rgba(0,0,0,0.15); width:80%; max-width:300px; animation:popupFade .3s ease;">
+<!-- Popup de alerta moderno -->
+<div id="popupAlert" style="
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none; align-items:center; justify-content:center;
+  z-index:210;">
+  <div style="
+    background:#fff;
+    border-radius:16px;
+    padding:24px 28px;
+    text-align:center;
+    box-shadow:0 6px 26px rgba(0,0,0,0.15);
+    width:80%; max-width:300px;
+    animation:popupFade .3s ease;">
+    <h3 id="popupAlertTitle" style="margin:0 0 10px;font-size:1.1rem;color:#222;">Información</h3>
+    <p id="popupAlertMsg" style="font-size:1rem;color:#444;margin:0 0 18px;"></p>
+    <button id="popupAlertOk" style="background:#0066ff;color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:600;cursor:pointer;">OK</button>
+  </div>
+</div>
+  
+  <!-- Popup de usuario -->
+<div id="popupUsuario" style="
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none; align-items:center; justify-content:center;
+  z-index:200;">
+  <div style="
+    background:#fff;
+    border-radius:16px;
+    padding:22px 28px;
+    text-align:center;
+    box-shadow:0 6px 26px rgba(0,0,0,0.15);
+    width:80%; max-width:300px;
+    animation:popupFade .3s ease;">
     <h3 style="margin:0 0 8px;font-size:1.1rem;color:#222;">Usuario actual</h3>
     <p id="popupNombre" style="font-weight:600;font-size:1.05rem;color:#444;margin:0;"></p>
-    <button onclick="cerrarPopupUsuario()" style="margin-top:16px;background:#0066ff;color:#fff;border:0; padding:10px 18px;border-radius:10px;font-weight:600;cursor:pointer;">Cerrar</button>
+    <button onclick="cerrarPopupUsuario()" style="
+      margin-top:16px;background:#0066ff;color:#fff;border:0;
+      padding:10px 18px;border-radius:10px;font-weight:600;
+      cursor:pointer;">Cerrar</button>
   </div>
 </div>
 
@@ -197,15 +256,22 @@
 
 <header>
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
+
   <div class="title">📋 Asistencia Bochica Sur</div>
+
   <div id="userCircle" onclick="mostrarNombreUsuario()" title=""
-    style="width:36px;height:36px;border-radius:50%;background:#ffffff33;color:#fff;display:flex;
-    align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;text-transform:uppercase;
-    border:2px solid #ffffff55;cursor:pointer;transition:transform 0.2s ease, background 0.3s ease;">
+    style="width:36px;height:36px;border-radius:50%;
+    background:#ffffff33;color:#fff;display:flex;
+    align-items:center;justify-content:center;
+    font-weight:700;font-size:0.9rem;text-transform:uppercase;
+    border:2px solid #ffffff55;cursor:pointer;
+    transition:transform 0.2s ease, background 0.3s ease;">
   </div>
 </header>
 
+
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
+
 <nav id="menu" aria-hidden="true">
   <button class="item" onclick="subirAsistencia()">📤 Subir asistencia</button>
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
@@ -243,37 +309,31 @@ const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
 let mesActual = meses[(new Date()).getMonth()];
 let usuarioGlobal = localStorage.getItem("usuarioCelula") || "";
 
-/* === ALERTA MODERNA === */
-function mostrarPopupAlerta(titulo, mensaje, callback){
-  mostrarPopupConfirm(titulo, mensaje, callback || null);
-}
-
 /* === LOGIN === */
 function iniciarSesion(){
   const nombre = document.getElementById("nombreUsuario").value.trim();
-  if(!nombre) return mostrarPopupAlerta("⚠️ Atención", "Ingresa tu nombre para continuar.");
+  if(!nombre) return mostrarAlerta("⚠️", "Ingresa tu nombre para continuar.");
   localStorage.setItem("usuarioCelula", nombre);
   usuarioGlobal = nombre;
   document.getElementById("loginScreen").style.display="none";
-  actualizarUserCircle();
-  cerrarMenu();
-}
+    actualizarUserCircle();
 
+  // close menu if open
+  const menu = document.getElementById('menu');
+  const overlay = document.getElementById('menuOverlay');
+  if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
+}
 function cerrarSesion(){
-  mostrarPopupConfirm("Cerrar sesión", "¿Deseas cerrar la sesión actual?", () => {
+  mostrarPopupConfirm("Confirmar", "¿Cerrar sesión?", () => {
     localStorage.removeItem("usuarioCelula");
     usuarioGlobal="";
     document.getElementById("loginScreen").style.display="flex";
-    cerrarMenu();
+    // close menu if open
+    const menu=document.getElementById('menu');
+    const overlay=document.getElementById('menuOverlay');
+    if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
   });
 }
-
-function cerrarMenu(){
-  const menu=document.getElementById('menu');
-  const overlay=document.getElementById('menuOverlay');
-  if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
-}
-
 if(usuarioGlobal){
   document.getElementById("loginScreen").style.display="none";
   actualizarUserCircle();
@@ -305,121 +365,157 @@ function cerrarPopupUsuario(){
   document.getElementById("popupUsuario").style.display = "none";
 }
 
+/* === ALERTA MODERNA === */
+function mostrarAlerta(titulo, mensaje){
+  const popup = document.getElementById('popupAlert');
+  document.getElementById('popupAlertTitle').textContent = titulo || "Información";
+  document.getElementById('popupAlertMsg').textContent = mensaje || "";
+  popup.style.display = "flex";
+
+  const btnOk = document.getElementById('popupAlertOk');
+  btnOk.onclick = () => { popup.style.display = "none"; };
+}
+
+/* === POPUP MODERNO === */
+function mostrarPopupConfirm(titulo, mensaje, callback){
+  const popup = document.getElementById('popupConfirm');
+  document.getElementById('popupConfirmTitle').textContent = titulo || "Confirmar";
+  document.getElementById('popupConfirmMsg').textContent = mensaje || "";
+  popup.style.display = "flex";
+
+  const btnYes = document.getElementById('popupConfirmYes');
+  const btnNo = document.getElementById('popupConfirmNo');
+
+  const cerrar = () => { popup.style.display = "none"; btnYes.onclick = null; btnNo.onclick = null; };
+  btnNo.onclick = cerrar;
+  btnYes.onclick = () => { cerrar(); if(callback) callback(); };
+}
+
+  
+
 /* === MENÚ === */
 function toggleMenu(){ const menu=document.getElementById('menu');const overlay=document.getElementById('menuOverlay');menu.classList.toggle('active');overlay.classList.toggle('active');menu.setAttribute('aria-hidden',!menu.classList.contains('active')); }
-function closeMenuIfOpen(evt){ const menu=document.getElementById('menu');const overlay=document.getElementById('menuOverlay');if(evt.target===overlay && menu.classList.contains('active')){ menu.classList.remove('active'); overlay.classList.remove('active'); } }
+function closeMenuIfOpen(evt){ const menu=document.getElementById('menu'); if(menu.classList.contains('active')) toggleMenu(); }
 
 /* === CONTADORES === */
-function changeCount(tipo, delta){
-  datos[tipo] = Math.max(0, datos[tipo]+delta);
-  document.getElementById(tipo).textContent = datos[tipo];
-  actualizarTotal();
-}
-function actualizarTotal(){
-  const total = Object.values(datos).reduce((a,b)=>a+b,0);
-  document.getElementById("total").textContent = total;
-}
+function changeCount(tipo, delta){ datos[tipo]=Math.max(0,(datos[tipo]||0)+delta); document.getElementById(tipo).textContent=datos[tipo]; actualizarTotal(); }
+function actualizarTotal(){ const total=Object.values(datos).reduce((a,b)=>a+b,0); document.getElementById('total').textContent=total; }
 
-/* === SUBIR ASISTENCIA === */
+/* === SUBIR ASISTENCIA MEJORADA === */
 async function subirAsistencia(){
-  if(!usuarioGlobal) return mostrarPopupAlerta("⚠️ Atención", "Inicia sesión antes de registrar asistencia.");
-  mostrarPopupConfirm("Subir asistencia", "¿Deseas registrar esta asistencia?", async ()=>{
-    const total = Object.values(datos).reduce((a,b)=>a+b,0);
-    if(total===0) return mostrarPopupAlerta("⚠️ Atención","No puedes subir asistencia vacía.");
-    const fd = new FormData();
-    fd.append("accion","registrar");
-    fd.append("usuario",usuarioGlobal);
-    fd.append("fecha",new Date().toLocaleDateString());
-    fd.append("hermanos",datos.hermanos);
-    fd.append("hermanas",datos.hermanas);
-    fd.append("amigos",datos.amigos);
-    fd.append("adolescentes",datos.adolescentes);
-    fd.append("niños",datos.niños);
-    try{
-      const res=await fetch(URL_SCRIPT,{method:"POST",body:fd});
-      const json=await res.json();
-      if(json.ok) mostrarPopupAlerta("✅ Éxito","Asistencia registrada correctamente.");
-      else mostrarPopupAlerta("⚠️ Error",json.msg||"Ocurrió un error.");
-    }catch(e){ mostrarPopupAlerta("⚠️ Error","No se pudo conectar con el servidor."); }
-  });
-}
+  if(!usuarioGlobal) return mostrarAlerta("⚠️", "Debes iniciar sesión primero.");
+  const total = Object.values(datos).reduce((a,b)=>a+b,0);
+  if(total === 0) return mostrarPopupConfirm("Sin registros", "No hay personas registradas.", null);
 
-/* === VER ASISTENCIA === */
-function abrirVerPantalla(){
-  const sec=document.getElementById("verPantalla");
-  sec.classList.add("active");
-  llenarMeses();
-}
-function cerrarVerPantalla(){
-  document.getElementById("verPantalla").classList.remove("active");
-}
-function llenarMeses(){
-  const sel=document.getElementById("selectMes");
-  sel.innerHTML="";
-  meses.forEach(m=>{
-    const op=document.createElement("option");
-    op.value=m; op.textContent=m;
-    if(m===mesActual) op.selected=true;
-    sel.appendChild(op);
-  });
-  cargarMes(mesActual);
-}
-async function cargarMes(m){
-  document.getElementById("tituloMes").textContent=m;
-  const loader=document.getElementById("loadingIndicator");
-  loader.style.display="block";
-  try{
-    const res=await fetch(`${URL_SCRIPT}?accion=listar&mes=${m}`);
-    const json=await res.json();
-    mostrarListado(json);
-  }catch(e){
-    mostrarPopupAlerta("⚠️ Error","No se pudo cargar la asistencia.");
-  }
-  loader.style.display="none";
-}
-function mostrarListado(list){
-  const div=document.getElementById("listado");
-  div.innerHTML="";
-  if(!list||list.length===0){
-    div.innerHTML="<div class='row'>No hay registros este mes.</div>";
-    return;
-  }
-  list.forEach(r=>{
-    const el=document.createElement("div");
-    el.className="row";
-    el.innerHTML=`<b>${r.fecha}</b> - ${r.usuario}<small>Hermanos:${r.hermanos}, Hermanas:${r.hermanas}, Amigos:${r.amigos}, Adolescentes:${r.adolescentes}, Niños:${r.niños}</small>`;
-    div.appendChild(el);
-  });
-}
-function mesSeleccionado(){ cargarMes(document.getElementById("selectMes").value); }
-function refrescarMes(){ mesSeleccionado(); }
+  // 🔹 cerrar menú si está abierto
+  const menu = document.getElementById('menu');
+  const overlay = document.getElementById('menuOverlay');
+  if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
 
-/* === ELIMINAR ASISTENCIA === */
-function eliminarAsistencia(){
-  mostrarPopupConfirm("Eliminar registros","¿Deseas borrar todos los registros del mes?",async ()=>{
-    try{
-      const res=await fetch(`${URL_SCRIPT}?accion=eliminar`);
-      const json=await res.json();
-      if(json.ok) mostrarPopupAlerta("✅ Éxito","Registros eliminados.");
-      else mostrarPopupAlerta("⚠️ Error",json.msg||"Error al eliminar.");
-    }catch(e){
-      mostrarPopupAlerta("⚠️ Error","No se pudo conectar con el servidor.");
+  // 🔹 confirmar envío
+  mostrarPopupConfirm("Confirmar envío", "¿Deseas subir esta asistencia?", async () => {
+    const fecha = new Date().toLocaleString('es-CO', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+    });
+
+    const params = new URLSearchParams({
+      usuario: usuarioGlobal,
+      fecha,
+      hermanos: datos.hermanos,
+      hermanas: datos.hermanas,
+      amigos: datos.amigos,
+      adolescentes: datos.adolescentes,
+      niños: datos.niños,
+      total
+    });
+
+    try {
+      const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
+      const text = await res.text();
+
+      if (text.includes('OK')) {
+        mostrarPopupConfirm("✅ Enviado", "Asistencia registrada correctamente.", null);
+        // 🔄 Reiniciar contadores
+        for (const k in datos) { datos[k] = 0; document.getElementById(k).textContent = 0; }
+        document.getElementById('total').textContent = 0;
+      } else if (text.includes('DUPLICADO')) {
+        mostrarPopupConfirm("⚠️ Duplicado", "Ya se envió recientemente.", null);
+      } else {
+        mostrarPopupConfirm("ℹ️ Servidor", text, null);
+      }
+    } catch (e) {
+      mostrarPopupConfirm("⚠️ Error", "No se pudo conectar con el servidor.", null);
     }
   });
 }
 
-/* === POPUP CONFIRM === */
-function mostrarPopupConfirm(titulo, mensaje, onConfirm){
-  const p=document.getElementById("popupConfirm");
-  document.getElementById("popupConfirmTitle").textContent=titulo;
-  document.getElementById("popupConfirmMsg").textContent=mensaje;
-  p.style.display="flex";
-  const yes=document.getElementById("popupConfirmYes");
-  const no=document.getElementById("popupConfirmNo");
-  const cerrar=()=>p.style.display="none";
-  yes.onclick=()=>{ cerrar(); if(onConfirm) onConfirm(); }
-  no.onclick=()=>cerrar();
+
+/* === VER === */
+function abrirVerPantalla(){ const menu=document.getElementById('menu');if(menu.classList.contains('active'))toggleMenu();const select=document.getElementById('selectMes');if(select.options.length===0){meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});}select.value=mesActual;document.getElementById('tituloMes').textContent='Asistencia de: '+select.value;document.getElementById('verPantalla').classList.add('active');verAsistencia(select.value);}
+function cerrarVerPantalla(){document.getElementById('verPantalla').classList.remove('active');}
+function mesSeleccionado(){const select=document.getElementById('selectMes');mesActual=select.value;document.getElementById('tituloMes').textContent='Asistencia de: '+mesActual;verAsistencia(mesActual);}
+function refrescarMes(){verAsistencia(document.getElementById('selectMes').value);}
+function showLoading(s){document.getElementById('loadingIndicator').style.display=s?'block':'none';}
+
+async function verAsistencia(mes){
+  showLoading(true);
+  const listado=document.getElementById('listado');listado.innerHTML='';
+  try{
+    const res=await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
+    const text=await res.text();let data;try{data=JSON.parse(text);}catch(e){data=[];}
+    if(!data||data.length<=1){listado.innerHTML=`<div class="row">⚠️ No hay registros en ${mes}.</div>`;showLoading(false);return;}
+    const filas=data.slice(1).reverse();
+    listado.innerHTML=filas.map(r=>{
+      const [usuario,fecha,h,hm,am,ad,ni,tot]=r;
+      const esPropio = usuarioGlobal && usuarioGlobal.toLowerCase()===String(usuario).toLowerCase();
+      // Use encodeURIComponent to safely pass parameters to eliminarRegistro via onclick
+      const usuarioEsc = escapeHTML(String(usuario || ''));
+      const fechaEsc = escapeHTML(String(fecha || ''));
+      const usuarioEnc = encodeURIComponent(String(usuario || ''));
+      const fechaEnc = encodeURIComponent(String(fecha || ''));
+      return `<div class="row">
+        <strong>👤 ${usuarioEsc}</strong>
+        <small>📅 ${fechaEsc}</small>
+        <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
+        <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
+        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarRegistro('${usuarioEnc}','${fechaEnc}')">🗑️ Eliminar</button>`:''}
+      </div>`;
+    }).join('');
+  }catch(e){listado.innerHTML=`<div class="row">⚠️ Error obteniendo datos.</div>`;}finally{showLoading(false);}
 }
+
+/* === ELIMINAR === */
+async function eliminarAsistencia(){
+  if(!usuarioGlobal) return mostrarAlerta("⚠️", "Debes iniciar sesión.");
+  mostrarPopupConfirm("Confirmar eliminación", "¿Eliminar asistencias de los últimos 10 minutos?", async () => {
+    try{
+      const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuarioGlobal)}`);
+      const text=await res.text();
+      if(text.startsWith("ELIMINADAS_")){const n=text.split('_')[1]||''; mostrarAlerta("🗑️", `Se eliminaron ${n} fila(s).`);}
+      else mostrarAlerta("ℹ️", text);
+    }catch(e){mostrarAlerta("⚠️", "Error al eliminar.");}
+  });
+}
+async function eliminarRegistro(usuarioEnc,fechaEnc){
+  const usuario = decodeURIComponent(usuarioEnc);
+  const fecha = decodeURIComponent(fechaEnc);
+  mostrarPopupConfirm("Confirmar eliminación", `¿Eliminar el registro de ${usuario} en ${fecha}?`, async () => {
+    try{
+      const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
+      const text=await res.text();
+      if(text.includes("ELIMINADA") || text.startsWith("ELIMINADAS_") ){ 
+        mostrarAlerta("🗑️", "Registro eliminado."); 
+        refrescarMes(); 
+      }
+      else mostrarAlerta("⚠️", text);
+    }catch(e){mostrarAlerta("⚠️", "Error al eliminar.");}
+  });
+}
+
+/* === HELPERS === */
+function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+(function init(){actualizarTotal();const select=document.getElementById('selectMes');meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.text=m;select.appendChild(o);});select.value=mesActual; /* show login if needed */ if(usuarioGlobal){ document.getElementById("loginScreen").style.display="none"; } else { document.getElementById("loginScreen").style.display="flex"; } })();
 </script>
 </body>
 </html>
