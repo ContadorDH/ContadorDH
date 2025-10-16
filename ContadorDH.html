@@ -126,6 +126,18 @@
     animation:spin .9s linear infinite; margin-left:8px;
   }
   @keyframes spin{ to{ transform:rotate(360deg) } }
+
+  /* Centrar los títulos de los contadores */
+  .card {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card .label {
+    text-align: center;
+    width: 100%;
+  }
+
+  
 </style>
 </head>
 <body>
@@ -143,8 +155,17 @@
 
 <header>
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
-  <div class="title">📋 Asistencia Célula</div>
+  <div class="title">📋 Asistencia Bochica Sur</div>
   <div style="width:28px"></div>
+    <div id="userCircle" style="
+    width:36px;height:36px;border-radius:50%;
+    background:#ffffff33;color:#fff;display:flex;
+    align-items:center;justify-content:center;
+    font-weight:700;font-size:0.9rem;text-transform:uppercase;
+    border:2px solid #ffffff55;cursor:default;">
+  </div>
+</header>
+
 </header>
 
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
@@ -193,6 +214,8 @@ function iniciarSesion(){
   localStorage.setItem("usuarioCelula", nombre);
   usuarioGlobal = nombre;
   document.getElementById("loginScreen").style.display="none";
+    actualizarUserCircle();
+
   // close menu if open
   const menu = document.getElementById('menu');
   const overlay = document.getElementById('menuOverlay');
@@ -211,7 +234,27 @@ function cerrarSesion(){
 }
 if(usuarioGlobal){
   document.getElementById("loginScreen").style.display="none";
+  actualizarUserCircle();
 }
+
+function actualizarUserCircle(){
+  const circle = document.getElementById("userCircle");
+  if(!circle) return;
+  if(!usuarioGlobal){
+    circle.textContent = "";
+    circle.style.display = "none";
+    return;
+  }
+  const partes = usuarioGlobal.trim().split(" ");
+  const iniciales = partes.length > 1
+    ? (partes[0][0] + partes[partes.length-1][0])
+    : partes[0][0];
+  circle.textContent = iniciales.toUpperCase();
+  circle.style.display = "flex";
+}
+
+
+  
 
 /* === MENÚ === */
 function toggleMenu(){ const menu=document.getElementById('menu');const overlay=document.getElementById('menuOverlay');menu.classList.toggle('active');overlay.classList.toggle('active');menu.setAttribute('aria-hidden',!menu.classList.contains('active')); }
@@ -300,3 +343,4 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
