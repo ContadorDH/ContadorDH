@@ -678,6 +678,7 @@
   <button class="item" onclick="subirAsistencia()">📤 Subir asistencia</button>
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
   <button class="item" onclick="cerrarSesion()">🔒 Cerrar sesión</button>
+  <button class="item" onclick="contactarSoporte()">📞 Soporte</button>
   <div style="flex:1"></div>
   <!-- Desplegable para seleccionar tema -->
   <select id="themeSelect" onchange="changeTheme(this.value)">
@@ -971,7 +972,13 @@ async function eliminarAsistencia(usuarioEnc,fechaEnc){
     }
   });
 }
-
+/* === SOPORTE === */
+function contactarSoporte(){
+  const numero = "3202897214";
+  const mensaje = encodeURIComponent("Hola, necesito soporte con la aplicación Asistencia Bochica Sur.");
+  window.open(`https://wa.me/${numero}?text=${mensaje}`, '_blank');
+  toggleMenu(); // Cerrar el menú después de seleccionar
+}
 /* === HELPERS === */
 function escapeHTML(s){
   return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -999,3 +1006,4 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
