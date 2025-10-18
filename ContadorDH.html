@@ -110,35 +110,37 @@
   .label{ font-size:1rem; font-weight:600; text-align:center; width:100%; }
   .controls{ display:flex; align-items:center; gap:16px; }
 
-  /* 🎨 Estilos Solicitados: Botones Redondos, 3D, Degradado (Rojo para -, Azul para +), Más Grandes */
+  /* 🎨 Estilos Solicitados: Botones Redondos, 3D, Degradado (Rojo suave para -, Azul para +), Más Grandes */
   .counterBtn {
-    width: 48px; /* Slightly larger size */
-    height: 48px;
+    width: 56px; /* Larger size */
+    height: 56px;
     border-radius: 50%; /* Makes buttons fully round */
     border: none;
     color: #fff;
-    font-size: 24px; /* Larger font for signs */
+    font-size: 28px; /* Larger font for signs */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(0, 0, 0, 0.1); /* 3D effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1); /* 3D effect */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    outline: none; /* Remove default outline */
+    -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
   }
 
   .counterBtn:hover {
     transform: translateY(-2px); /* Slight lift on hover for 3D effect */
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25), 0 3px 7px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), 0 3px 8px rgba(0, 0, 0, 0.15);
   }
 
   .counterBtn:active {
     transform: translateY(1px); /* Pressed effect */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
-  /* 🔴 Red gradient for "-" buttons */
+  /* 🔴 Softer red gradient for "-" buttons */
   .counterBtn.minus {
-    background: linear-gradient(135deg, #ff4d4d, #cc0000); /* Red gradient for "-" */
+    background: linear-gradient(135deg, #e57373, #b71c1c); /* Softer red gradient for "-" */
   }
 
   /* 🔵 Blue gradient for "+" buttons */
@@ -146,16 +148,18 @@
     background: linear-gradient(135deg, #4d94ff, #004ecc); /* Blue gradient for "+" */
   }
 
-  /* Ghost button style (unchanged, for compatibility) */
+  /* Ghost button style (updated for size, for compatibility) */
   .counterBtn.ghost {
     background: transparent;
     color: var(--muted);
     border: 1px solid #eee;
-    width: 44px; /* Slightly larger to match */
-    height: 44px;
+    width: 50px; /* Slightly larger to match */
+    height: 50px;
     border-radius: 50%; /* Keep round shape */
-    font-size: 20px; /* Slightly larger font */
+    font-size: 24px; /* Slightly larger font */
     box-shadow: none; /* Remove 3D effect for ghost buttons */
+    outline: none; /* Remove default outline */
+    -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
   }
 
   .counterBtn.ghost:hover {
@@ -570,6 +574,7 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
 
 
 
