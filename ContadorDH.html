@@ -58,7 +58,6 @@
   --spinner-border: #4b5e7a;
 }
 
-
     /* Tema Lila */
     [data-theme="lila"] {
       --primary: #a78bfa;
@@ -654,7 +653,6 @@
 <nav id="menu" aria-hidden="true">
   <button class="item" onclick="subirAsistencia()">📤 Subir asistencia</button>
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
-  <button class="item" onclick="eliminarAsistencia()">🗑️ Eliminar registros</button>
   <button class="item" onclick="cerrarSesion()">🔒 Cerrar sesión</button>
   <div style="flex:1"></div>
   <!-- Desplegable para seleccionar tema -->
@@ -910,17 +908,13 @@ async function verAsistencia(mes){
     const filas=data.slice(1).reverse();
     listado.innerHTML=filas.map(r=>{
       const [usuario,fecha,h,hm,am,ad,ni,tot]=r;
-      const esPropio = usuarioGlobal && usuarioGlobal.toLowerCase()===String(usuario).toLowerCase();
       const usuarioEsc = escapeHTML(String(usuario || ''));
       const fechaEsc = escapeHTML(String(fecha || ''));
-      const usuarioEnc = encodeURIComponent(String(usuario || ''));
-      const fechaEnc = encodeURIComponent(String(fecha || ''));
       return `<div class="row">
         <strong>👤 ${usuarioEsc}</strong>
         <small>📅 ${fechaEsc}</small>
         <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
         <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
-        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarRegistro('${usuarioEnc}','${fechaEnc}')">🗑️ Eliminar</button>`:''}
       </div>`;
     }).join('');
   }catch(e){
@@ -928,43 +922,6 @@ async function verAsistencia(mes){
   }finally{
     showLoading(false);
   }
-}
-
-/* === ELIMINAR === */
-async function eliminarAsistencia(){
-  if(!usuarioGlobal) return mostrarAlerta("⚠️", "Debes iniciar sesión.");
-  mostrarPopupConfirm("Confirmar eliminación", "¿Eliminar asistencias de los últimos 10 minutos?", async () => {
-    try{
-      const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuarioGlobal)}`);
-      const text=await res.text();
-      if(text.startsWith("ELIMINADAS_")){
-        const n=text.split('_')[1]||'';
-        mostrarAlerta("🗑️", `Se eliminaron ${n} fila(s).`);
-      } else {
-        mostrarAlerta("ℹ️", text);
-      }
-    }catch(e){
-      mostrarAlerta("⚠️", "Error al eliminar.");
-    }
-  });
-}
-async function eliminarRegistro(usuarioEnc,fechaEnc){
-  const usuario = decodeURIComponent(usuarioEnc);
-  const fecha = decodeURIComponent(fechaEnc);
-  mostrarPopupConfirm("Confirmar eliminación", `¿Eliminar el registro de ${usuario} en ${fecha}?`, async () => {
-    try{
-      const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
-      const text=await res.text();
-      if(text.includes("ELIMINADA") || text.startsWith("ELIMINADAS_")){ 
-        mostrarAlerta("🗑️", "Registro eliminado."); 
-        refrescarMes(); 
-      } else {
-        mostrarAlerta("⚠️", text);
-      }
-    }catch(e){
-      mostrarAlerta("⚠️", "Error al eliminar.");
-    }
-  });
 }
 
 /* === HELPERS === */
@@ -994,11 +951,3 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
