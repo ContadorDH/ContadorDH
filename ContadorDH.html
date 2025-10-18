@@ -110,30 +110,30 @@
   .label{ font-size:1rem; font-weight:600; text-align:center; width:100%; }
   .controls{ display:flex; align-items:center; gap:16px; }
 
-  /* 🎨 Estilos Solicitados: Botones Redondos, 3D, Degradado (Rojo para -, Azul para +) */
+  /* 🎨 Estilos Solicitados: Botones Redondos, 3D, Degradado (Rojo para -, Azul para +), Más Grandes */
   .counterBtn {
-    width: 40px;
-    height: 40px;
+    width: 48px; /* Slightly larger size */
+    height: 48px;
     border-radius: 50%; /* Makes buttons fully round */
     border: none;
     color: #fff;
-    font-size: 20px;
+    font-size: 24px; /* Larger font for signs */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1); /* 3D effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(0, 0, 0, 0.1); /* 3D effect */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .counterBtn:hover {
     transform: translateY(-2px); /* Slight lift on hover for 3D effect */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 3px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25), 0 3px 7px rgba(0, 0, 0, 0.15);
   }
 
   .counterBtn:active {
     transform: translateY(1px); /* Pressed effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
   /* 🔴 Red gradient for "-" buttons */
@@ -151,10 +151,10 @@
     background: transparent;
     color: var(--muted);
     border: 1px solid #eee;
-    width: 36px;
-    height: 36px;
+    width: 44px; /* Slightly larger to match */
+    height: 44px;
     border-radius: 50%; /* Keep round shape */
-    font-size: 18px;
+    font-size: 20px; /* Slightly larger font */
     box-shadow: none; /* Remove 3D effect for ghost buttons */
   }
 
@@ -570,6 +570,7 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
 
 
 
