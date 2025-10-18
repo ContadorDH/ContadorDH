@@ -41,22 +41,30 @@
       --spinner-border: #e6eefc;
     }
 
-    /* Tema Oscuro */
-    [data-theme="oscuro"] {
-      --primary: #4b5e7a;
-      --primary-dark: #3a4b63;
-      --bg: #2c2f33;
-      --card: #3a3f44;
-      --muted: #a0a4a8;
-      --text: #ffffff;
-      --shadow: rgba(0, 0, 0, 0.3);
-      --shadow-dark: rgba(0, 0, 0, 0.2);
-      --menu-bg: linear-gradient(180deg, #3a3f44 0%, #2c2f33 100%);
-      --popup-bg: #3a3f44;
-      --button-minus: linear-gradient(135deg, #f28b82, #b71c1c);
-      --button-plus: linear-gradient(135deg, #6b7280, #4b5e7a);
-      --spinner-border: #4b5e7a;
-    }
+  /* 🌙 Tema Oscuro */
+[data-theme="oscuro"] {
+  --primary: #4b5e7a;
+  --primary-dark: #3a4b63;
+  --bg: #2c2f33;
+  --card: #3a3f44;
+  --muted: #a0a4a8;
+  --text: #ffffff; /* 🔥 texto completamente blanco */
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-dark: rgba(0, 0, 0, 0.2);
+  --menu-bg: linear-gradient(180deg, #3a3f44 0%, #2c2f33 100%);
+  --popup-bg: #3a3f44;
+  --button-minus: linear-gradient(135deg, #f28b82, #b71c1c);
+  --button-plus: linear-gradient(135deg, #6b7280, #4b5e7a);
+  --spinner-border: #4b5e7a;
+}
+
+/* ✳️ Asegura que todos los textos usen el color definido */
+[data-theme="oscuro"], 
+[data-theme="oscuro"] * {
+  color: var(--text) !important;
+  background-color: transparent;
+}
+
 
     /* Tema Lila */
     [data-theme="lila"] {
@@ -993,6 +1001,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
