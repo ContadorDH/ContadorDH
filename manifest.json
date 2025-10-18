@@ -2,7 +2,7 @@
   "name": "Asistencia Bochica Sur",
   "short_name": "Asistencia Bochica",
   "description": "App para registrar asistencias en Bochica Sur",
-  "start_url": "/ContadorDH/ContadorDH.html",
+  "start_url": "https://contadordh.github.io/ContadorDH/ContadorDH.html",
   "display": "standalone",
   "theme_color": "#0066ff",
   "background_color": "#f4f6fb",
@@ -19,3 +19,4 @@
     }
   ]
 }
+
