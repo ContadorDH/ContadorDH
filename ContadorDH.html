@@ -137,12 +137,12 @@
   }
 
   /* 🔴 Red gradient for "-" buttons */
-  .counterBtn[onclick*="-1"] {
+  .counterBtn.minus {
     background: linear-gradient(135deg, #ff4d4d, #cc0000); /* Red gradient for "-" */
   }
 
   /* 🔵 Blue gradient for "+" buttons */
-  .counterBtn[onclick*="1"] {
+  .counterBtn.plus {
     background: linear-gradient(135deg, #4d94ff, #004ecc); /* Blue gradient for "+" */
   }
 
@@ -333,11 +333,11 @@
 </nav>
 
 <main id="principal">
-  <div class="card"><div class="label">Hermanos</div><div class="controls"><button class="counterBtn" onclick="changeCount('hermanos', -1)">−</button><div class="value" id="hermanos">0</div><button class="counterBtn" onclick="changeCount('hermanos', 1)">+</button></div></div>
-  <div class="card"><div class="label">Hermanas</div><div class="controls"><button class="counterBtn" onclick="changeCount('hermanas', -1)">−</button><div class="value" id="hermanas">0</div><button class="counterBtn" onclick="changeCount('hermanas', 1)">+</button></div></div>
-  <div class="card"><div class="label">Amigos</div><div class="controls"><button class="counterBtn" onclick="changeCount('amigos', -1)">−</button><div class="value" id="amigos">0</div><button class="counterBtn" onclick="changeCount('amigos', 1)">+</button></div></div>
-  <div class="card"><div class="label">Adolescentes</div><div class="controls"><button class="counterBtn" onclick="changeCount('adolescentes', -1)">−</button><div class="value" id="adolescentes">0</div><button class="counterBtn" onclick="changeCount('adolescentes', 1)">+</button></div></div>
-  <div class="card"><div class="label">Niños</div><div class="controls"><button class="counterBtn" onclick="changeCount('niños', -1)">−</button><div class="value" id="niños">0</div><button class="counterBtn" onclick="changeCount('niños', 1)">+</button></div></div>
+  <div class="card"><div class="label">Hermanos</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('hermanos', -1)">−</button><div class="value" id="hermanos">0</div><button class="counterBtn plus" onclick="changeCount('hermanos', 1)">+</button></div></div>
+  <div class="card"><div class="label">Hermanas</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('hermanas', -1)">−</button><div class="value" id="hermanas">0</div><button class="counterBtn plus" onclick="changeCount('hermanas', 1)">+</button></div></div>
+  <div class="card"><div class="label">Amigos</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('amigos', -1)">−</button><div class="value" id="amigos">0</div><button class="counterBtn plus" onclick="changeCount('amigos', 1)">+</button></div></div>
+  <div class="card"><div class="label">Adolescentes</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('adolescentes', -1)">−</button><div class="value" id="adolescentes">0</div><button class="counterBtn plus" onclick="changeCount('adolescentes', 1)">+</button></div></div>
+  <div class="card"><div class="label">Niños</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('niños', -1)">−</button><div class="value" id="niños">0</div><button class="counterBtn plus" onclick="changeCount('niños', 1)">+</button></div></div>
   <div class="totalCard">Total asistencia: <span id="total">0</span></div>
 </main>
 
@@ -570,6 +570,7 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
 
 
 
