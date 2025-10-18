@@ -41,22 +41,22 @@
       --spinner-border: #e6eefc;
     }
 
-/* 🌙 Tema Oscuro */
-[data-theme="oscuro"] {
-  --primary: #4b5e7a;
-  --primary-dark: #3a4b63;
-  --bg: #2c2f33;
-  --card: #3a3f44;
-  --muted: #a0a4a8;
-  --text: #ffffff; /* 🔥 texto completamente blanco */
-  --shadow: rgba(0, 0, 0, 0.3);
-  --shadow-dark: rgba(0, 0, 0, 0.2);
-  --menu-bg: linear-gradient(180deg, #3a3f44 0%, #2c2f33 100%);
-  --popup-bg: #3a3f44;
-  --button-minus: linear-gradient(135deg, #f28b82, #b71c1c);
-  --button-plus: linear-gradient(135deg, #6b7280, #4b5e7a);
-  --spinner-border: #4b5e7a;
-}
+    /* 🌙 Tema Oscuro */
+    [data-theme="oscuro"] {
+      --primary: #4b5e7a;
+      --primary-dark: #3a4b63;
+      --bg: #2c2f33;
+      --card: #3a3f44;
+      --muted: #a0a4a8;
+      --text: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.3);
+      --shadow-dark: rgba(0, 0, 0, 0.2);
+      --menu-bg: linear-gradient(180deg, #3a3f44 0%, #2c2f33 100%);
+      --popup-bg: #3a3f44;
+      --button-minus: linear-gradient(135deg, #f28b82, #b71c1c);
+      --button-plus: linear-gradient(135deg, #6b7280, #4b5e7a);
+      --spinner-border: #4b5e7a;
+    }
 
     /* Tema Lila */
     [data-theme="lila"] {
@@ -395,12 +395,11 @@
       color: var(--text);
     }
 
-    /* 🎯 Aumentar tamaño de los números en Total asistencia */
     .totalCard #total {
-      font-size: 2.5rem; /* Tamaño más grande para los números */
-      font-weight: 800; /* Más énfasis */
-      color: var(--primary); /* Usar color primario para destacar */
-      line-height: 1.2; /* Mejor espaciado */
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
     }
 
     #verPantalla {
@@ -908,13 +907,17 @@ async function verAsistencia(mes){
     const filas=data.slice(1).reverse();
     listado.innerHTML=filas.map(r=>{
       const [usuario,fecha,h,hm,am,ad,ni,tot]=r;
+      const esPropio = usuarioGlobal && usuarioGlobal.toLowerCase()===String(usuario).toLowerCase();
       const usuarioEsc = escapeHTML(String(usuario || ''));
       const fechaEsc = escapeHTML(String(fecha || ''));
+      const usuarioEnc = encodeURIComponent(String(usuario || ''));
+      const fechaEnc = encodeURIComponent(String(fecha || ''));
       return `<div class="row">
         <strong>👤 ${usuarioEsc}</strong>
         <small>📅 ${fechaEsc}</small>
         <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
         <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
+        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarAsistencia('${usuarioEnc}','${fechaEnc}')">🗑️ Eliminar</button>`:''}
       </div>`;
     }).join('');
   }catch(e){
@@ -922,6 +925,26 @@ async function verAsistencia(mes){
   }finally{
     showLoading(false);
   }
+}
+
+/* === ELIMINAR ASISTENCIA === */
+async function eliminarAsistencia(usuarioEnc,fechaEnc){
+  const usuario = decodeURIComponent(usuarioEnc);
+  const fecha = decodeURIComponent(fechaEnc);
+  mostrarPopupConfirm("Confirmar eliminación", `¿Eliminar el registro de ${usuario} en ${fecha}?`, async () => {
+    try{
+      const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
+      const text=await res.text();
+      if(text.includes("ELIMINADA") || text.startsWith("ELIMINADAS_")){ 
+        mostrarAlerta("🗑️", "Registro eliminado."); 
+        refrescarMes(); 
+      } else {
+        mostrarAlerta("⚠️", text);
+      }
+    }catch(e){
+      mostrarAlerta("⚠️", "Error al eliminar.");
+    }
+  });
 }
 
 /* === HELPERS === */
