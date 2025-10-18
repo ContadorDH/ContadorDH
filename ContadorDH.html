@@ -337,13 +337,16 @@
 </nav>
 
 <main id="principal">
+  <!-- 🔼 Total ahora aparece arriba -->
+  <div class="totalCard">Total asistencia: <span id="total">0</span></div>
+
   <div class="card"><div class="label">Hermanos</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('hermanos', -1)">−</button><div class="value" id="hermanos">0</div><button class="counterBtn plus" onclick="changeCount('hermanos', 1)">+</button></div></div>
   <div class="card"><div class="label">Hermanas</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('hermanas', -1)">−</button><div class="value" id="hermanas">0</div><button class="counterBtn plus" onclick="changeCount('hermanas', 1)">+</button></div></div>
   <div class="card"><div class="label">Amigos</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('amigos', -1)">−</button><div class="value" id="amigos">0</div><button class="counterBtn plus" onclick="changeCount('amigos', 1)">+</button></div></div>
   <div class="card"><div class="label">Adolescentes</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('adolescentes', -1)">−</button><div class="value" id="adolescentes">0</div><button class="counterBtn plus" onclick="changeCount('adolescentes', 1)">+</button></div></div>
   <div class="card"><div class="label">Niños</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('niños', -1)">−</button><div class="value" id="niños">0</div><button class="counterBtn plus" onclick="changeCount('niños', 1)">+</button></div></div>
-  <div class="totalCard">Total asistencia: <span id="total">0</span></div>
 </main>
+
 
 <section id="verPantalla" aria-hidden="true">
   <div id="verHeader">
@@ -574,3 +577,4 @@ function escapeHTML(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 </script>
 </body>
 </html>
+
