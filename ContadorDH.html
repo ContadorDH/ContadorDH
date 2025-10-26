@@ -675,6 +675,7 @@
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
 
 <nav id="menu" aria-hidden="true">
+<button class="item" onclick="refrescarPagina()">🔄 Refrescar</button>
 
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
   <button class="item" onclick="cerrarSesion()">🔒 Cerrar sesión</button>
@@ -755,7 +756,28 @@ function changeTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme); // Guardar tema seleccionado
 }
+ function refrescarPagina() {
+    try {
+      // Limpia el almacenamiento local y de sesión
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // Limpia caché del navegador si es posible (moderno)
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) caches.delete(name);
+        });
+      }
 
+      // Forzar recarga total desde el servidor (no desde caché)
+      location.reload(true);
+    } catch (e) {
+      console.error("Error al refrescar:", e);
+      location.reload();
+    }
+  }
+
+  
 /* === LOGIN === */
 function iniciarSesion(){
   const nombre = document.getElementById("nombreUsuario").value.trim();
@@ -1034,6 +1056,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
