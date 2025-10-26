@@ -694,27 +694,33 @@
   <button class="item" onclick="toggleMenu()">Cerrar</button>
 </nav>
 
-   <div style="margin-top: 20px; display: flex; justify-content: center;">
-    <button 
-      onclick="subirAsistencia()" 
-      style="
-        background: var(--primary);
-        color: #fff;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        box-shadow: 0 6px 16px var(--shadow-dark);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      "
-      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px var(--shadow)';"
-      onmouseout="this.style.transform='none'; this.style.boxShadow='0 6px 16px var(--shadow-dark)';"
-    >
-      📤 Subir asistencia
-    </button>
-  </div>
+<!-- Botón fijo en la parte inferior -->
+<button 
+  onclick="subirAsistencia()" 
+  id="btn-subir"
+  style="
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px var(--shadow-dark);
+    z-index: 1000;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.transform='translateX(-50%) scale(1.05)';"
+  onmouseout="this.style.transform='translateX(-50%)';"
+>
+  📤 Subir asistencia
+</button>
+
 
 <main id="principal">
   <div class="totalCard">Total asistencia: <span id="total">0</span></div>
@@ -1028,6 +1034,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
