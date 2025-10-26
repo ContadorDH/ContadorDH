@@ -702,70 +702,71 @@
   height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  padding: 6px 0;
+  padding: 4px 0;
   overflow: hidden;
 ">
 
   <div class="totalCard" style="
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     background: #f4f6ff;
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 6px 10px;
-    width: 88%;
+    width: 90%;
     text-align: center;
   ">
     Total asistencia: <span id="total">0</span>
   </div>
 
-  <div class="card" style="width:88%; background:#fff; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:6px 0; text-align:center;">
-    <div class="label" style="font-size:15px; font-weight:600;">Hermanos</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:8px;">
-      <button class="counterBtn minus" style="width:36px; height:36px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:18px;" onclick="changeCount('hermanos', -1)">−</button>
-      <div class="value" id="hermanos" style="font-size:18px; font-weight:600;">0</div>
-      <button class="counterBtn plus" style="width:36px; height:36px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:18px;" onclick="changeCount('hermanos', 1)">+</button>
+  <!-- Tarjeta genérica -->
+  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:4px 0; text-align:center;">
+    <div class="label" style="font-size:17px; font-weight:600;">Hermanos</div>
+    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:6px;">
+      <button class="counterBtn minus" style="width:38px; height:38px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:20px;" onclick="changeCount('hermanos', -1)">−</button>
+      <div class="value" id="hermanos" style="font-size:20px; font-weight:700;">0</div>
+      <button class="counterBtn plus" style="width:38px; height:38px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:20px;" onclick="changeCount('hermanos', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:88%; background:#fff; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:6px 0; text-align:center;">
-    <div class="label" style="font-size:15px; font-weight:600;">Hermanas</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:8px;">
-      <button class="counterBtn minus" style="width:36px; height:36px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:18px;" onclick="changeCount('hermanas', -1)">−</button>
-      <div class="value" id="hermanas" style="font-size:18px; font-weight:600;">0</div>
-      <button class="counterBtn plus" style="width:36px; height:36px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:18px;" onclick="changeCount('hermanas', 1)">+</button>
+  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:4px 0; text-align:center;">
+    <div class="label" style="font-size:17px; font-weight:600;">Hermanas</div>
+    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:6px;">
+      <button class="counterBtn minus" style="width:38px; height:38px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:20px;" onclick="changeCount('hermanas', -1)">−</button>
+      <div class="value" id="hermanas" style="font-size:20px; font-weight:700;">0</div>
+      <button class="counterBtn plus" style="width:38px; height:38px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:20px;" onclick="changeCount('hermanas', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:88%; background:#fff; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:6px 0; text-align:center;">
-    <div class="label" style="font-size:15px; font-weight:600;">Amigos</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:8px;">
-      <button class="counterBtn minus" style="width:36px; height:36px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:18px;" onclick="changeCount('amigos', -1)">−</button>
-      <div class="value" id="amigos" style="font-size:18px; font-weight:600;">0</div>
-      <button class="counterBtn plus" style="width:36px; height:36px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:18px;" onclick="changeCount('amigos', 1)">+</button>
+  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:4px 0; text-align:center;">
+    <div class="label" style="font-size:17px; font-weight:600;">Amigos</div>
+    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:6px;">
+      <button class="counterBtn minus" style="width:38px; height:38px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:20px;" onclick="changeCount('amigos', -1)">−</button>
+      <div class="value" id="amigos" style="font-size:20px; font-weight:700;">0</div>
+      <button class="counterBtn plus" style="width:38px; height:38px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:20px;" onclick="changeCount('amigos', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:88%; background:#fff; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:6px 0; text-align:center;">
-    <div class="label" style="font-size:15px; font-weight:600;">Adolescentes</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:8px;">
-      <button class="counterBtn minus" style="width:36px; height:36px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:18px;" onclick="changeCount('adolescentes', -1)">−</button>
-      <div class="value" id="adolescentes" style="font-size:18px; font-weight:600;">0</div>
-      <button class="counterBtn plus" style="width:36px; height:36px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:18px;" onclick="changeCount('adolescentes', 1)">+</button>
+  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:4px 0; text-align:center;">
+    <div class="label" style="font-size:17px; font-weight:600;">Adolescentes</div>
+    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:6px;">
+      <button class="counterBtn minus" style="width:38px; height:38px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:20px;" onclick="changeCount('adolescentes', -1)">−</button>
+      <div class="value" id="adolescentes" style="font-size:20px; font-weight:700;">0</div>
+      <button class="counterBtn plus" style="width:38px; height:38px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:20px;" onclick="changeCount('adolescentes', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:88%; background:#fff; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:6px 0; text-align:center;">
-    <div class="label" style="font-size:15px; font-weight:600;">Niños</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:8px;">
-      <button class="counterBtn minus" style="width:36px; height:36px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:18px;" onclick="changeCount('niños', -1)">−</button>
-      <div class="value" id="niños" style="font-size:18px; font-weight:600;">0</div>
-      <button class="counterBtn plus" style="width:36px; height:36px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:18px;" onclick="changeCount('niños', 1)">+</button>
+  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:4px 0; text-align:center;">
+    <div class="label" style="font-size:17px; font-weight:600;">Niños</div>
+    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:6px;">
+      <button class="counterBtn minus" style="width:38px; height:38px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:20px;" onclick="changeCount('niños', -1)">−</button>
+      <div class="value" id="niños" style="font-size:20px; font-weight:700;">0</div>
+      <button class="counterBtn plus" style="width:38px; height:38px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:20px;" onclick="changeCount('niños', 1)">+</button>
     </div>
   </div>
 
-  <div style="text-align:center;">
+  <div style="text-align:center; width:90%;">
     <button 
       onclick="subirAsistencia()" 
       id="btn-subir"
@@ -773,13 +774,13 @@
         background: #1976d2;
         color: #fff;
         border: none;
-        padding: 8px 14px;
+        padding: 10px;
         border-radius: 12px;
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 1rem;
         cursor: pointer;
-        width: 88%;
-        max-width: 420px;
+        width: 100%;
+        white-space: nowrap;
         box-shadow: 0 3px 8px rgba(0,0,0,0.2);
       "
     >
@@ -788,6 +789,7 @@
   </div>
 
 </main>
+
 
 
 
@@ -1115,6 +1117,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
