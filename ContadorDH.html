@@ -298,90 +298,132 @@
 
  /* Ajustar las tarjetas para ocupar más espacio y reducir márgenes */
 .card {
-  width: 95%; /* Reducido de 98% a 95% para dar un pequeño margen lateral */
+  width: 95%; /* Ajustado a 95% para dar margen lateral y mantener proporcionalidad */
   max-width: 440px;
   background: var(--card);
-  border-radius: 8px;
-  padding: 2px 0; /* Reducido de 4px 0 para ahorrar espacio vertical */
-  box-shadow: 0 2px 6px var(--shadow); /* Sombra más ligera para no ocupar espacio visual */
+  border-radius: var(--radius); /* Restaurado del original */
+  padding: 2px 0; /* Mantenido reducido para optimizar espacio */
+  box-shadow: 0 2px 6px var(--shadow); /* Sombra ligera para no ocupar espacio */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px; /* Mantenido en 2px para compactar */
+  gap: 2px; /* Mantenido reducido */
 }
 
-/* Aumentar tamaño de etiquetas con ajuste proporcional */
+/* Ajustar tamaño de etiquetas (solo "Hermanos", "Hermanas", etc.) */
 .label {
-  font-size: 1.2rem; /* Reducido de 1.8rem a 1.5rem */
+  font-size: 19px; /* Ajustado a 19px (equivalente a 1.2rem con base 16px) */
   font-weight: 600;
   text-align: center;
   width: 100%;
   color: var(--text);
-  line-height: 1.1;
-  margin: 0;
+  line-height: 1.1; /* Ajustado para compactar */
+  margin: 0; /* Eliminar márgenes innecesarios */
 }
 
-/* Aumentar tamaño de los botones de contador con ajuste proporcional */
+/* Ajustar los controles (contenedor de botones y valor) */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 2px; /* Reducido de 16px para compactar */
+}
+
+/* Aumentar tamaño de los botones de contador con efectos restaurados */
 .counterBtn {
-  width: 15vw; /* Usar porcentaje de la ventana para proporcionalidad (aprox. 60px en 360px de ancho) */
-  height: 15vw; /* Mismo ancho y alto para mantener círculos */
-  max-width: 70px; /* Límite máximo para pantallas grandes */
-  max-height: 70px; /* Límite máximo */
+  width: 15vw; /* Mantenido proporcional */
+  height: 15vw; /* Mantenido proporcional */
+  max-width: 56px; /* Restaurado del original */
+  max-height: 56px; /* Restaurado del original */
   border-radius: 50%;
   border: none;
   color: #fff;
-  font-size: 2rem; /* Reducido de 2.5rem para mejor ajuste */
+  font-size: 28px; /* Restaurado del original */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1); /* Restaurado */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Restaurado */
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
+.counterBtn:hover {
+  transform: translateY(-2px); /* Restaurado efecto hover */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), 0 3px 8px rgba(0, 0, 0, 0.15); /* Restaurado */
+}
+
+.counterBtn:active {
+  transform: translateY(1px); /* Restaurado efecto active */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Restaurado */
+}
+
+.counterBtn.minus {
+  background: var(--button-minus);
+}
+
+.counterBtn.plus {
+  background: var(--button-plus);
+}
+
+.counterBtn.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--muted);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  box-shadow: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.counterBtn.ghost:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 /* Ajustar el valor del contador */
 .value {
-  min-width: 50px; /* Reducido de 60px para ahorrar espacio */
+  min-width: 44px; /* Restaurado del original */
   text-align: center;
   font-weight: 700;
-  font-size: 2rem; /* Reducido de 2.5rem para mejor ajuste */
+  font-size: 1.2rem; /* Restaurado del original */
   color: var(--text);
-  line-height: 1; /* Ajustado para compactar */
 }
 
 /* Ajustar la tarjeta de total */
 .totalCard {
-  width: 95%; /* Reducido de 98% a 95% para dar margen */
+  width: 95%; /* Ajustado a 95% para margen lateral */
   max-width: 440px;
   background: var(--card);
-  border-radius: 8px;
-  padding: 6px 8px; /* Reducido de 8px 10px para ahorrar espacio */
+  border-radius: var(--radius); /* Restaurado */
+  padding: 6px 8px; /* Reducido para optimizar espacio */
   text-align: center;
   font-weight: 700;
-  box-shadow: 0 4px 12px var(--shadow-dark);
-  font-size: 1.5rem; /* Reducido de 1.8rem para mejor ajuste */
+  box-shadow: 0 4px 12px var(--shadow-dark); /* Ajustado */
+  font-size: 1.1rem; /* Restaurado */
   color: var(--text);
   margin: 2px 0; /* Margen mínimo */
 }
 
 .totalCard #total {
-  font-size: 2.8rem; /* Reducido de 3.5rem para evitar desbordamiento */
+  font-size: 2.5rem; /* Restaurado */
   font-weight: 800;
   color: var(--primary);
-  line-height: 1.1; /* Ajustado para compactar */
+  line-height: 1.2; /* Restaurado */
 }
 
 /* Asegurar que el contenedor principal use todo el espacio */
 main {
   height: calc(100vh - 64px);
   overflow: auto;
-  padding: 1px 0; /* Reducido de 2px 0 para ahorrar espacio */
+  padding: 1px 0; /* Reducido */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px; /* Reducido de 2px para ahorrar espacio vertical */
+  gap: 1px; /* Reducido */
 }
 
     #verPantalla {
@@ -1104,6 +1146,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
