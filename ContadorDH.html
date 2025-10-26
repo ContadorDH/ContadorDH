@@ -675,7 +675,7 @@
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
 
 <nav id="menu" aria-hidden="true">
-  <button class="item" onclick="subirAsistencia()">📤 Subir asistencia</button>
+
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
   <button class="item" onclick="cerrarSesion()">🔒 Cerrar sesión</button>
   <button class="item" onclick="contactarSoporte()">📞 Soporte</button>
@@ -693,6 +693,28 @@
   </select>
   <button class="item" onclick="toggleMenu()">Cerrar</button>
 </nav>
+
+   <div style="margin-top: 20px; display: flex; justify-content: center;">
+    <button 
+      onclick="subirAsistencia()" 
+      style="
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 6px 16px var(--shadow-dark);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      "
+      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px var(--shadow)';"
+      onmouseout="this.style.transform='none'; this.style.boxShadow='0 6px 16px var(--shadow-dark)';"
+    >
+      📤 Subir asistencia
+    </button>
+  </div>
 
 <main id="principal">
   <div class="totalCard">Total asistencia: <span id="total">0</span></div>
@@ -1006,5 +1028,6 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
