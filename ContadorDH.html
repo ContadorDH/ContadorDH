@@ -698,15 +698,58 @@
 
 
 
-<main id="principal" style="padding-bottom: 100px;">
+<main id="principal" style="padding-bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: calc(100vh - 64px); overflow: hidden;">
 
-  <div class="totalCard">Total asistencia: <span id="total">0</span></div>
-  <div class="card"><div class="label">Hermanos</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('hermanos', -1)">−</button><div class="value" id="hermanos">0</div><button class="counterBtn plus" onclick="changeCount('hermanos', 1)">+</button></div></div>
-  <div class="card"><div class="label">Hermanas</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('hermanas', -1)">−</button><div class="value" id="hermanas">0</div><button class="counterBtn plus" onclick="changeCount('hermanas', 1)">+</button></div></div>
-  <div class="card"><div class="label">Amigos</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('amigos', -1)">−</button><div class="value" id="amigos">0</div><button class="counterBtn plus" onclick="changeCount('amigos', 1)">+</button></div></div>
-  <div class="card"><div class="label">Adolescentes</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('adolescentes', -1)">−</button><div class="value" id="adolescentes">0</div><button class="counterBtn plus" onclick="changeCount('adolescentes', 1)">+</button></div></div>
-  <div class="card"><div class="label">Niños</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('niños', -1)">−</button><div class="value" id="niños">0</div><button class="counterBtn plus" onclick="changeCount('niños', 1)">+</button></div></div>
-  <div style="text-align:center; margin-top: 20px; margin-bottom: 30px;">
+  <div style="width:100%; flex:1; overflow-y:auto; display:flex; flex-direction:column; align-items:center; gap:10px; padding:10px 0;">
+    <div class="totalCard">Total asistencia: <span id="total">0</span></div>
+
+    <div class="card">
+      <div class="label">Hermanos</div>
+      <div class="controls">
+        <button class="counterBtn minus" onclick="changeCount('hermanos', -1)">−</button>
+        <div class="value" id="hermanos">0</div>
+        <button class="counterBtn plus" onclick="changeCount('hermanos', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Hermanas</div>
+      <div class="controls">
+        <button class="counterBtn minus" onclick="changeCount('hermanas', -1)">−</button>
+        <div class="value" id="hermanas">0</div>
+        <button class="counterBtn plus" onclick="changeCount('hermanas', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Amigos</div>
+      <div class="controls">
+        <button class="counterBtn minus" onclick="changeCount('amigos', -1)">−</button>
+        <div class="value" id="amigos">0</div>
+        <button class="counterBtn plus" onclick="changeCount('amigos', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Adolescentes</div>
+      <div class="controls">
+        <button class="counterBtn minus" onclick="changeCount('adolescentes', -1)">−</button>
+        <div class="value" id="adolescentes">0</div>
+        <button class="counterBtn plus" onclick="changeCount('adolescentes', 1)">+</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Niños</div>
+      <div class="controls">
+        <button class="counterBtn minus" onclick="changeCount('niños', -1)">−</button>
+        <div class="value" id="niños">0</div>
+        <button class="counterBtn plus" onclick="changeCount('niños', 1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding:10px 0 14px;">
     <button 
       onclick="subirAsistencia()" 
       id="btn-subir"
@@ -714,14 +757,14 @@
         background: var(--primary);
         color: #fff;
         border: none;
-        padding: 14px 24px;
+        padding: 12px 18px;
         border-radius: 14px;
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 0.95rem;
         cursor: pointer;
-        width: 90%;
-        max-width: 440px;
-        box-shadow: 0 6px 16px var(--shadow-dark);
+        width: 88%;
+        max-width: 420px;
+        box-shadow: 0 5px 14px var(--shadow-dark);
         transition: transform 0.2s ease;
       "
       onmouseover="this.style.transform='scale(1.03)';"
@@ -732,6 +775,7 @@
   </div>
 
 </main>
+
 
 <section id="verPantalla" aria-hidden="true">
   <div id="verHeader">
@@ -1057,6 +1101,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
