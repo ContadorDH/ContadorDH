@@ -296,111 +296,88 @@
       gap: 12px;
     }
 
-    .card {
-      width: 92%;
-      max-width: 440px;
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      box-shadow: 0 8px 20px var(--shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .label {
-      font-size: 1rem;
-      font-weight: 600;
-      text-align: center;
-      width: 100%;
-      color: var(--text);
-    }
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+    /* Ajustar las tarjetas para ocupar más espacio y reducir márgenes */
+.card {
+  width: 98%; /* Aumentado de 92% a 98% */
+  max-width: 440px;
+  background: var(--card);
+  border-radius: 8px; /* Reducido de 10px para un look más compacto */
+  padding: 4px 0; /* Reducido de 12px 14px para maximizar espacio interno */
+  box-shadow: 0 4px 10px var(--shadow); /* Sombra más ligera */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px; /* Reducido de 10px para compactar */
+}
 
-    .counterBtn {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      border: none;
-      color: #fff;
-      font-size: 28px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      outline: none;
-      -webkit-tap-highlight-color: transparent;
-    }
+/* Aumentar tamaño de etiquetas */
+.label {
+  font-size: 2.2rem; /* Aumentado de 1rem a 2.2rem */
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  color: var(--text);
+  line-height: 1.2; /* Ajustado para mejor legibilidad */
+}
 
-    .counterBtn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), 0 3px 8px rgba(0, 0, 0, 0.15);
-    }
+/* Aumentar tamaño de los botones de contador */
+.counterBtn {
+  width: 70px; /* Aumentado de 56px */
+  height: 70px; /* Aumentado de 56px */
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-size: 2.5rem; /* Aumentado de 28px a 2.5rem */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    .counterBtn:active {
-      transform: translateY(1px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
+/* Ajustar el valor del contador */
+.value {
+  min-width: 60px; /* Aumentado de 44px para dar espacio al texto más grande */
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.5rem; /* Aumentado de 1.2rem a 2.5rem */
+  color: var(--text);
+}
 
-    .counterBtn.minus {
-      background: var(--button-minus);
-    }
+/* Ajustar la tarjeta de total */
+.totalCard {
+  width: 98%; /* Aumentado de 92% */
+  max-width: 440px;
+  background: var(--card);
+  border-radius: 8px; /* Reducido de 10px */
+  padding: 8px 10px; /* Ajustado para dar espacio al texto más grande */
+  text-align: center;
+  font-weight: 700;
+  box-shadow: 0 6px 16px var(--shadow-dark); /* Sombra más ligera */
+  font-size: 1.8rem; /* Aumentado de 1.1rem */
+  color: var(--text);
+}
 
-    .counterBtn.plus {
-      background: var(--button-plus);
-    }
+.totalCard #total {
+  font-size: 3.5rem; /* Aumentado de 2.5rem */
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.2;
+}
 
-    .counterBtn.ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--muted);
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 24px;
-      box-shadow: none;
-      outline: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .counterBtn.ghost:hover {
-      transform: none;
-      box-shadow: none;
-    }
-
-    .value {
-      min-width: 44px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--text);
-    }
-
-    .totalCard {
-      width: 92%;
-      max-width: 440px;
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 14px;
-      text-align: center;
-      font-weight: 700;
-      box-shadow: 0 10px 28px var(--shadow-dark);
-      font-size: 1.1rem;
-      color: var(--text);
-    }
-
-    .totalCard #total {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--primary);
-      line-height: 1.2;
-    }
+/* Asegurar que el contenedor principal use todo el espacio */
+main {
+  height: calc(100vh - 64px);
+  overflow: auto;
+  padding: 2px 0; /* Reducido de 16px 12px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px; /* Reducido de 12px */
+}
 
     #verPantalla {
       position: fixed;
@@ -699,86 +676,91 @@
 
 
 <main id="principal" style="
-  height: calc(100vh - 60px);
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 2px 0;
   overflow: hidden;
-  gap: 4px;
+  gap: 2px; /* Reducido de 4px a 2px para minimizar separación */
 ">
 
   <div class="totalCard" style="
-    font-size: 20px;
+    font-size: 28px; /* Aumentado de 20px a 28px */
     font-weight: 700;
-    background: #f4f6ff;
+    background: var(--card);
     border-radius: 10px;
-    padding: 6px 10px;
-    width: 90%;
+    padding: 8px 10px; /* Aumentado ligeramente para dar espacio al texto más grande */
+    width: 98%; /* Aumentado de 90% a 98% para usar más espacio */
     text-align: center;
+    margin: 2px 0; /* Margen mínimo para evitar que se pegue al header */
   ">
-    Total asistencia: <span id="total" style="font-size: 2.2rem;">0</span>
+    Total asistencia: <span id="total" style="font-size: 3.5rem;">0</span> <!-- Aumentado de 2.2rem a 3.5rem -->
   </div>
 
-  <!-- Tarjeta genérica -->
-  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:2px 0; text-align:center;">
-    <div class="label" style="font-size:19px; font-weight:600;">Hermanos</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:4px;">
-      <button class="counterBtn minus" style="width:42px; height:42px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:22px;" onclick="changeCount('hermanos', -1)">−</button>
-      <div class="value" id="hermanos" style="font-size:22px; font-weight:700;">0</div>
-      <button class="counterBtn plus" style="width:42px; height:42px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:22px;" onclick="changeCount('hermanos', 1)">+</button>
+  <!-- Tarjeta Hermanos -->
+  <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
+    <div class="label" style="font-size: 2.2rem; font-weight: 600;">Hermanos</div> <!-- Aumentado de 19px a 2.2rem -->
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 2px;"> <!-- Reducido de 4px a 2px -->
+      <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanos', -1)">−</button> <!-- Botón más grande, fuente de 22px a 2.5rem -->
+      <div class="value" id="hermanos" style="font-size: 2.5rem; font-weight: 700;">0</div> <!-- Aumentado de 22px a 2.5rem -->
+      <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanos', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:2px 0; text-align:center;">
-    <div class="label" style="font-size:19px; font-weight:600;">Hermanas</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:4px;">
-      <button class="counterBtn minus" style="width:42px; height:42px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:22px;" onclick="changeCount('hermanas', -1)">−</button>
-      <div class="value" id="hermanas" style="font-size:22px; font-weight:700;">0</div>
-      <button class="counterBtn plus" style="width:42px; height:42px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:22px;" onclick="changeCount('hermanas', 1)">+</button>
+  <!-- Tarjeta Hermanas -->
+  <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
+    <div class="label" style="font-size: 2.2rem; font-weight: 600;">Hermanas</div>
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 2px;">
+      <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanas', -1)">−</button>
+      <div class="value" id="hermanas" style="font-size: 2.5rem; font-weight: 700;">0</div>
+      <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanas', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:2px 0; text-align:center;">
-    <div class="label" style="font-size:19px; font-weight:600;">Amigos</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:4px;">
-      <button class="counterBtn minus" style="width:42px; height:42px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:22px;" onclick="changeCount('amigos', -1)">−</button>
-      <div class="value" id="amigos" style="font-size:22px; font-weight:700;">0</div>
-      <button class="counterBtn plus" style="width:42px; height:42px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:22px;" onclick="changeCount('amigos', 1)">+</button>
+  <!-- Tarjeta Amigos -->
+  <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
+    <div class="label" style="font-size: 2.2rem; font-weight: 600;">Amigos</div>
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 2px;">
+      <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('amigos', -1)">−</button>
+      <div class="value" id="amigos" style="font-size: 2.5rem; font-weight: 700;">0</div>
+      <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('amigos', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:2px 0; text-align:center;">
-    <div class="label" style="font-size:19px; font-weight:600;">Adolescentes</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:4px;">
-      <button class="counterBtn minus" style="width:42px; height:42px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:22px;" onclick="changeCount('adolescentes', -1)">−</button>
-      <div class="value" id="adolescentes" style="font-size:22px; font-weight:700;">0</div>
-      <button class="counterBtn plus" style="width:42px; height:42px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:22px;" onclick="changeCount('adolescentes', 1)">+</button>
+  <!-- Tarjeta Adolescentes -->
+  <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
+    <div class="label" style="font-size: 2.2rem; font-weight: 600;">Adolescentes</div>
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 2px;">
+      <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('adolescentes', -1)">−</button>
+      <div class="value" id="adolescentes" style="font-size: 2.5rem; font-weight: 700;">0</div>
+      <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('adolescentes', 1)">+</button>
     </div>
   </div>
 
-  <div class="card" style="width:90%; background:#fff; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:2px 0; text-align:center;">
-    <div class="label" style="font-size:19px; font-weight:600;">Niños</div>
-    <div class="controls" style="display:flex; justify-content:center; align-items:center; gap:4px;">
-      <button class="counterBtn minus" style="width:42px; height:42px; border-radius:50%; background:#d32f2f; color:#fff; border:none; font-size:22px;" onclick="changeCount('niños', -1)">−</button>
-      <div class="value" id="niños" style="font-size:22px; font-weight:700;">0</div>
-      <button class="counterBtn plus" style="width:42px; height:42px; border-radius:50%; background:#1976d2; color:#fff; border:none; font-size:22px;" onclick="changeCount('niños', 1)">+</button>
+  <!-- Tarjeta Niños -->
+  <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
+    <div class="label" style="font-size: 2.2rem; font-weight: 600;">Niños</div>
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 2px;">
+      <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('niños', -1)">−</button>
+      <div class="value" id="niños" style="font-size: 2.5rem; font-weight: 700;">0</div>
+      <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('niños', 1)">+</button>
     </div>
   </div>
 
-  <div style="text-align:center; width:90%; margin-top:4px;">
+  <div style="text-align: center; width: 98%; margin: 2px 0;">
     <button 
       onclick="subirAsistencia()" 
       id="btn-subir"
       style="
-        background: #1976d2;
+        background: var(--primary);
         color: #fff;
         border: none;
-        padding: 10px 0;
+        padding: 12px 0;
         border-radius: 12px;
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 1.5rem; /* Aumentado de 1.1rem a 1.5rem */
         cursor: pointer;
         width: 100%;
         box-shadow: 0 3px 8px rgba(0,0,0,0.2);
@@ -1117,6 +1099,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
