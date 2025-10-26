@@ -296,43 +296,46 @@
       gap: 12px;
     }
 
-    /* Ajustar las tarjetas para ocupar más espacio y reducir márgenes */
+ /* Ajustar las tarjetas para ocupar más espacio y reducir márgenes */
 .card {
-  width: 98%; /* Aumentado de 92% a 98% */
+  width: 95%; /* Reducido de 98% a 95% para dar un pequeño margen lateral */
   max-width: 440px;
   background: var(--card);
-  border-radius: 8px; /* Reducido de 10px para un look más compacto */
-  padding: 4px 0; /* Reducido de 12px 14px para maximizar espacio interno */
-  box-shadow: 0 4px 10px var(--shadow); /* Sombra más ligera */
+  border-radius: 8px;
+  padding: 2px 0; /* Reducido de 4px 0 para ahorrar espacio vertical */
+  box-shadow: 0 2px 6px var(--shadow); /* Sombra más ligera para no ocupar espacio visual */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px; /* Reducido de 10px para compactar */
+  gap: 2px; /* Mantenido en 2px para compactar */
 }
 
-/* Aumentar tamaño de etiquetas */
+/* Aumentar tamaño de etiquetas con ajuste proporcional */
 .label {
-  font-size: 2.2rem; /* Aumentado de 1rem a 2.2rem */
+  font-size: 1.8rem; /* Reducido de 2.2rem para mejor ajuste en pantallas pequeñas */
   font-weight: 600;
   text-align: center;
   width: 100%;
   color: var(--text);
-  line-height: 1.2; /* Ajustado para mejor legibilidad */
+  line-height: 1.1; /* Ajustado para compactar verticalmente */
+  margin: 0; /* Eliminar márgenes innecesarios */
 }
 
-/* Aumentar tamaño de los botones de contador */
+/* Aumentar tamaño de los botones de contador con ajuste proporcional */
 .counterBtn {
-  width: 70px; /* Aumentado de 56px */
-  height: 70px; /* Aumentado de 56px */
+  width: 15vw; /* Usar porcentaje de la ventana para proporcionalidad (aprox. 60px en 360px de ancho) */
+  height: 15vw; /* Mismo ancho y alto para mantener círculos */
+  max-width: 70px; /* Límite máximo para pantallas grandes */
+  max-height: 70px; /* Límite máximo */
   border-radius: 50%;
   border: none;
   color: #fff;
-  font-size: 2.5rem; /* Aumentado de 28px a 2.5rem */
+  font-size: 2rem; /* Reducido de 2.5rem para mejor ajuste */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
@@ -340,43 +343,45 @@
 
 /* Ajustar el valor del contador */
 .value {
-  min-width: 60px; /* Aumentado de 44px para dar espacio al texto más grande */
+  min-width: 50px; /* Reducido de 60px para ahorrar espacio */
   text-align: center;
   font-weight: 700;
-  font-size: 2.5rem; /* Aumentado de 1.2rem a 2.5rem */
+  font-size: 2rem; /* Reducido de 2.5rem para mejor ajuste */
   color: var(--text);
+  line-height: 1; /* Ajustado para compactar */
 }
 
 /* Ajustar la tarjeta de total */
 .totalCard {
-  width: 98%; /* Aumentado de 92% */
+  width: 95%; /* Reducido de 98% a 95% para dar margen */
   max-width: 440px;
   background: var(--card);
-  border-radius: 8px; /* Reducido de 10px */
-  padding: 8px 10px; /* Ajustado para dar espacio al texto más grande */
+  border-radius: 8px;
+  padding: 6px 8px; /* Reducido de 8px 10px para ahorrar espacio */
   text-align: center;
   font-weight: 700;
-  box-shadow: 0 6px 16px var(--shadow-dark); /* Sombra más ligera */
-  font-size: 1.8rem; /* Aumentado de 1.1rem */
+  box-shadow: 0 4px 12px var(--shadow-dark);
+  font-size: 1.5rem; /* Reducido de 1.8rem para mejor ajuste */
   color: var(--text);
+  margin: 2px 0; /* Margen mínimo */
 }
 
 .totalCard #total {
-  font-size: 3.5rem; /* Aumentado de 2.5rem */
+  font-size: 2.8rem; /* Reducido de 3.5rem para evitar desbordamiento */
   font-weight: 800;
   color: var(--primary);
-  line-height: 1.2;
+  line-height: 1.1; /* Ajustado para compactar */
 }
 
 /* Asegurar que el contenedor principal use todo el espacio */
 main {
   height: calc(100vh - 64px);
   overflow: auto;
-  padding: 2px 0; /* Reducido de 16px 12px */
+  padding: 1px 0; /* Reducido de 2px 0 para ahorrar espacio */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px; /* Reducido de 12px */
+  gap: 1px; /* Reducido de 2px para ahorrar espacio vertical */
 }
 
     #verPantalla {
@@ -1099,6 +1104,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
