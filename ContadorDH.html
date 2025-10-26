@@ -695,32 +695,7 @@
   <button class="item" onclick="toggleMenu()">Cerrar</button>
 </nav>
 
-<!-- Botón fijo en la parte inferior -->
-<button 
-  onclick="subirAsistencia()" 
-  id="btn-subir"
-  style="
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 30px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow: 0 6px 20px var(--shadow-dark);
-    z-index: 50;
-    transition: all 0.2s ease;
-  "
-  onmouseover="this.style.transform='translateX(-50%) scale(1.05)';"
-  onmouseout="this.style.transform='translateX(-50%)';"
->
-  📤 Subir asistencia
-</button>
+
 
 
 <main id="principal" style="padding-bottom: 100px;">
@@ -731,6 +706,31 @@
   <div class="card"><div class="label">Amigos</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('amigos', -1)">−</button><div class="value" id="amigos">0</div><button class="counterBtn plus" onclick="changeCount('amigos', 1)">+</button></div></div>
   <div class="card"><div class="label">Adolescentes</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('adolescentes', -1)">−</button><div class="value" id="adolescentes">0</div><button class="counterBtn plus" onclick="changeCount('adolescentes', 1)">+</button></div></div>
   <div class="card"><div class="label">Niños</div><div class="controls"><button class="counterBtn minus" onclick="changeCount('niños', -1)">−</button><div class="value" id="niños">0</div><button class="counterBtn plus" onclick="changeCount('niños', 1)">+</button></div></div>
+  <div style="text-align:center; margin-top: 20px; margin-bottom: 30px;">
+    <button 
+      onclick="subirAsistencia()" 
+      id="btn-subir"
+      style="
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        padding: 14px 24px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 90%;
+        max-width: 440px;
+        box-shadow: 0 6px 16px var(--shadow-dark);
+        transition: transform 0.2s ease;
+      "
+      onmouseover="this.style.transform='scale(1.03)';"
+      onmouseout="this.style.transform='scale(1)';"
+    >
+      📤 Subir asistencia
+    </button>
+  </div>
+
 </main>
 
 <section id="verPantalla" aria-hidden="true">
@@ -1057,6 +1057,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
