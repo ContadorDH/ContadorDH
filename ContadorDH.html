@@ -321,11 +321,12 @@
   margin: 0;
 }
 
-/* Ajustar los controles (contenedor de botones y valor) */
+/* Ajustar los controles (contenedor de botones y valor) con nueva separación horizontal */
 .controls {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 30vw; /* Aumentado a 30vw para simular el ancho de tres números */
+  max-width: 120px; /* Límite máximo para evitar exceso en pantallas grandes */
 }
 
 /* Aumentar tamaño de los botones de contador con efectos restaurados */
@@ -699,10 +700,9 @@ main {
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
 
 <nav id="menu" aria-hidden="true">
-<button class="item" onclick="refrescarPagina()">🔄 Refrescar</button>
-
   <button class="item" onclick="abrirVerPantalla()">👁️ Ver asistencia</button>
   <button class="item" onclick="cerrarSesion()">🔒 Cerrar sesión</button>
+  <button class="item" onclick="refrescarPagina()">🔄 Refrescar</button>
   <button class="item" onclick="contactarSoporte()">📞 Soporte</button>
   <div style="flex:1"></div>
   <!-- Desplegable para seleccionar tema -->
@@ -1146,6 +1146,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
