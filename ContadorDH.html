@@ -729,28 +729,28 @@ main {
   align-items: center;
   padding: 2px 0;
   overflow: hidden;
-  gap: 2px; /* Reducido de 4px a 2px para minimizar separación */
+  gap: 2px;
 ">
 
   <div class="totalCard" style="
-    font-size: 28px; /* Aumentado de 20px a 28px */
+    font-size: 28px;
     font-weight: 700;
     background: var(--card);
     border-radius: 10px;
-    padding: 8px 10px; /* Aumentado ligeramente para dar espacio al texto más grande */
-    width: 98%; /* Aumentado de 90% a 98% para usar más espacio */
+    padding: 8px 10px;
+    width: 98%;
     text-align: center;
-    margin: 2px 0; /* Margen mínimo para evitar que se pegue al header */
+    margin: 2px 0;
   ">
-    Total asistencia: <span id="total" style="font-size: 3.5rem;">0</span> <!-- Aumentado de 2.2rem a 3.5rem -->
+    Total asistencia: <span id="total" style="font-size: 3.5rem;">0</span>
   </div>
 
   <!-- Tarjeta Hermanos -->
   <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
-    <div class="label" style="font-size: 1.2rem; font-weight: 600;">Hermanos</div> <!-- Aumentado de 19px a 2.2rem -->
-    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 6px;"> <!-- Reducido de 4px a 2px -->
-      <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanos', -1)">−</button> <!-- Botón más grande, fuente de 22px a 2.5rem -->
-      <div class="value" id="hermanos" style="font-size: 2.5rem; font-weight: 700;">0</div> <!-- Aumentado de 22px a 2.5rem -->
+    <div class="label" style="font-size: 1.2rem; font-weight: 600;">Hermanos</div>
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 36vw; max-width: 130px;"> <!-- Aumentado de 6px a 36vw con límite máximo -->
+      <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanos', -1)">−</button>
+      <div class="value" id="hermanos" style="font-size: 2.5rem; font-weight: 700;">0</div>
       <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanos', 1)">+</button>
     </div>
   </div>
@@ -758,7 +758,7 @@ main {
   <!-- Tarjeta Hermanas -->
   <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
     <div class="label" style="font-size: 1.2rem; font-weight: 600;">Hermanas</div>
-    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 6px;">
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 36vw; max-width: 130px;"> <!-- Aumentado de 6px a 36vw con límite máximo -->
       <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanas', -1)">−</button>
       <div class="value" id="hermanas" style="font-size: 2.5rem; font-weight: 700;">0</div>
       <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('hermanas', 1)">+</button>
@@ -768,7 +768,7 @@ main {
   <!-- Tarjeta Amigos -->
   <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
     <div class="label" style="font-size: 1.2rem; font-weight: 600;">Amigos</div>
-    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 6px;">
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 36vw; max-width: 130px;"> <!-- Aumentado de 6px a 36vw con límite máximo -->
       <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('amigos', -1)">−</button>
       <div class="value" id="amigos" style="font-size: 2.5rem; font-weight: 700;">0</div>
       <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('amigos', 1)">+</button>
@@ -778,7 +778,7 @@ main {
   <!-- Tarjeta Adolescentes -->
   <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
     <div class="label" style="font-size: 1.2rem; font-weight: 600;">Adolescentes</div>
-    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 6px;">
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 36vw; max-width: 130px;"> <!-- Aumentado de 6px a 36vw con límite máximo -->
       <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('adolescentes', -1)">−</button>
       <div class="value" id="adolescentes" style="font-size: 2.5rem; font-weight: 700;">0</div>
       <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('adolescentes', 1)">+</button>
@@ -788,7 +788,7 @@ main {
   <!-- Tarjeta Niños -->
   <div class="card" style="width: 98%; background: var(--card); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 4px 0; text-align: center;">
     <div class="label" style="font-size: 1.2rem; font-weight: 600;">Niños</div>
-    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 6px;">
+    <div class="controls" style="display: flex; justify-content: center; align-items: center; gap: 36vw; max-width: 130px;"> <!-- Aumentado de 6px a 36vw con límite máximo -->
       <button class="counterBtn minus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-minus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('niños', -1)">−</button>
       <div class="value" id="niños" style="font-size: 2.5rem; font-weight: 700;">0</div>
       <button class="counterBtn plus" style="width: 70px; height: 70px; border-radius: 50%; background: var(--button-plus); color: #fff; border: none; font-size: 2.5rem;" onclick="changeCount('niños', 1)">+</button>
@@ -806,7 +806,7 @@ main {
         padding: 12px 0;
         border-radius: 12px;
         font-weight: 600;
-        font-size: 1.5rem; /* Aumentado de 1.1rem a 1.5rem */
+        font-size: 1.5rem;
         cursor: pointer;
         width: 100%;
         box-shadow: 0 3px 8px rgba(0,0,0,0.2);
@@ -1145,6 +1145,7 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
 
 
 
