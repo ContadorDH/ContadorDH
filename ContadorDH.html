@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Asistencia Bochica Sur</title>
   
   <!-- === PWA y Iconos para Android e iOS === -->
@@ -645,6 +645,102 @@ main {
       cursor: pointer;
       transition: transform 0.2s ease, background 0.3s ease;
     }
+
+
+/* ✅ PARCHE RESPONSIVE (mínimo, sin tocar HTML/JS) */
+html, body {
+  height: 100%;
+}
+
+/* Evita cortes por barras del sistema (iOS/Android modernos) */
+body {
+  min-height: 100dvh; /* mejor que 100vh en móviles */
+  overflow-x: hidden;
+}
+
+/* El main en tu HTML tiene overflow:hidden inline. 
+   Forzamos scroll vertical cuando haga falta. */
+#principal {
+  height: calc(100dvh - 64px) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+
+/* Permite que los controles no "exploten" horizontalmente */
+.controls {
+  width: 100%;
+  justify-content: space-between;
+  gap: 12px !important; /* en vez de 30px/108px, solo si el ancho aprieta */
+  padding: 0 12px;
+}
+
+/* Mantiene botones grandes, pero adaptables en pantallas pequeñas */
+.counterBtn {
+  width: clamp(54px, 18vw, 70px) !important;
+  height: clamp(54px, 18vw, 70px) !important;
+  font-size: clamp(26px, 7vw, 40px) !important;
+}
+
+/* Reduce un poco tipografías solo en pantallas bajas */
+@media (max-height: 700px) {
+  .totalCard { font-size: 22px !important; }
+  .totalCard #total { font-size: 3rem !important; }
+  .label { font-size: 1.05rem !important; }
+  .value { font-size: 2.1rem !important; }
+}
+
+/* En pantallas MUY angostas, evitamos overflow horizontal */
+@media (max-width: 360px) {
+  .controls { padding: 0 8px; gap: 8px !important; }
+  .value { min-width: 34px; }
+}
+
+
+
+    /* ✅ Fix iPhone 11 + Huawei: viewport real + no cortar contenido */
+html {
+  height: -webkit-fill-available; /* iOS */
+}
+
+body {
+  min-height: 100vh;       /* fallback */
+  min-height: 100dvh;      /* moderno: alto real */
+  min-height: -webkit-fill-available; /* iOS Safari */
+  overflow-x: hidden;
+}
+
+/* Tu main tiene overflow:hidden inline. Esto evita que se corte en pantallas bajas. */
+#principal {
+  height: calc(100vh - 64px) !important;   /* fallback */
+  height: calc(100dvh - 64px) !important;  /* moderno */
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+/* Evita que los controles “revienten” en pantallas angostas */
+.controls {
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 12px;
+  gap: 12px !important;
+}
+
+/* Botones adaptables: mantiene 70px, pero se encoge si el teléfono es pequeño */
+.counterBtn {
+  width: clamp(54px, 18vw, 70px) !important;
+  height: clamp(54px, 18vw, 70px) !important;
+  font-size: clamp(26px, 7vw, 40px) !important;
+}
+
+/* Ajuste ligero solo en pantallas bajas (iPhone 11 en algunos modos / Huawei con barra visible) */
+@media (max-height: 700px) {
+  .totalCard #total { font-size: 3rem !important; }
+  .value { font-size: 2.2rem !important; }
+}
+
+    
   </style>
 </head>
 <body>
@@ -1145,6 +1241,9 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
+
+
+
 
 
 
