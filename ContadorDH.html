@@ -786,6 +786,27 @@ body {
   </div>
 </div>
 
+<!-- LOGIN IGLESIA (Paso 1 - NO activo aún) -->
+<div id="churchScreen" style="position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:130;">
+  <div style="background:var(--card);padding:28px;border-radius:14px;box-shadow:0 8px 24px var(--shadow);text-align:center;color:var(--text);width:320px;max-width:92vw;">
+    <h2>Selecciona tu iglesia</h2>
+    <p style="color:var(--muted);margin-top:6px;">Elige la iglesia y escribe el PIN</p>
+
+    <select id="iglesiaSelect" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--muted);background:var(--card);color:var(--text);font-size:1rem;"></select>
+
+    <div style="height:10px"></div>
+
+    <input id="pinIglesia" type="password" placeholder="PIN"
+      style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--muted);font-size:1rem;background:var(--card);color:var(--text);" />
+
+    <button onclick="loginIglesia()"
+      style="margin-top:12px;background:var(--primary);color:#fff;border:0;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:600;width:100%;">
+      Entrar
+    </button>
+  </div>
+</div>
+
+
 <header>
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
   <div class="title">📋 Asistencia Bochica Sur</div>
@@ -940,6 +961,11 @@ const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
 let mesActual = meses[(new Date()).getMonth()];
 let usuarioGlobal = localStorage.getItem("usuarioCelula") || "";
 
+// === MULTI-IGLESIA (Paso 1) ===
+let iglesiaId = localStorage.getItem("iglesiaId") || "";
+let tokenIglesia = localStorage.getItem("tokenIglesia") || "";
+
+
 // 🎨 Función para cambiar el tema
 function changeTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
@@ -980,9 +1006,86 @@ function iniciarSesion(){
   const overlay = document.getElementById('menuOverlay');
   if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
 }
+
+
+
+
+
+// === MULTI-IGLESIA (Paso 1 - NO activo aún) ===
+async function cargarIglesias(){
+  // IMPORTANTE: esto aún no se usa hasta que el Apps Script esté listo
+  try{
+    const res = await fetch(`${URL_SCRIPT}?accion=iglesias`);
+    const text = await res.text();
+    const data = JSON.parse(text); // [{id, nombre}]
+    const sel = document.getElementById("iglesiaSelect");
+    sel.innerHTML = "";
+    data.forEach(it=>{
+      const o=document.createElement("option");
+      o.value=it.id;
+      o.textContent=it.nombre;
+      sel.appendChild(o);
+    });
+  }catch(e){
+    mostrarAlerta("⚠️", "No se pudo cargar la lista de iglesias (aún no está activo).");
+  }
+}
+
+function mostrarPantallaIglesia(){
+  document.getElementById("churchScreen").style.display = "flex";
+  cargarIglesias();
+}
+
+function ocultarPantallaIglesia(){
+  document.getElementById("churchScreen").style.display = "none";
+}
+
+async function loginIglesia(){
+  // IMPORTANTE: esto aún no se usa hasta que el Apps Script esté listo
+  const sel = document.getElementById("iglesiaSelect");
+  const pin = (document.getElementById("pinIglesia").value || "").trim();
+  const id = sel.value;
+
+  if(!id) return mostrarAlerta("⚠️", "Selecciona una iglesia.");
+  if(!pin) return mostrarAlerta("⚠️", "Ingresa el PIN.");
+
+  try{
+    const res = await fetch(`${URL_SCRIPT}?accion=login&iglesia=${encodeURIComponent(id)}&pin=${encodeURIComponent(pin)}`);
+    const text = await res.text();
+    const obj = JSON.parse(text); // {ok:true, token:"...", iglesiaNombre:"..."}
+
+    if(!obj.ok){
+      return mostrarAlerta("⚠️", obj.mensaje || "PIN incorrecto.");
+    }
+
+    iglesiaId = id;
+    tokenIglesia = obj.token;
+    localStorage.setItem("iglesiaId", iglesiaId);
+    localStorage.setItem("tokenIglesia", tokenIglesia);
+
+    // (opcional) cambia el título visible cuando el backend ya responda nombre
+    const titleEl = document.querySelector("header .title");
+    if(titleEl && obj.iglesiaNombre) titleEl.textContent = `📋 Asistencia ${obj.iglesiaNombre}`;
+
+    ocultarPantallaIglesia();
+  }catch(e){
+    mostrarAlerta("⚠️", "Error iniciando en la iglesia (aún no está activo).");
+  }
+}
+
+
+
+
 function cerrarSesion(){
   mostrarPopupConfirm("Confirmar", "¿Cerrar sesión?", () => {
     localStorage.removeItem("usuarioCelula");
+
+    // ✅ borrar iglesia también
+    localStorage.removeItem("iglesiaId");
+    localStorage.removeItem("tokenIglesia");
+    iglesiaId = "";
+    tokenIglesia = "";
+
     usuarioGlobal="";
     document.getElementById("loginScreen").style.display="flex";
     // close menu if open
@@ -991,10 +1094,14 @@ function cerrarSesion(){
     if(menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); }
   });
 }
+
 if(usuarioGlobal){
   document.getElementById("loginScreen").style.display="none";
   actualizarUserCircle();
+
+
 }
+
 
 function actualizarUserCircle(){
   const circle = document.getElementById("userCircle");
@@ -1072,9 +1179,24 @@ function actualizarTotal(){
   document.getElementById('total').textContent=total; 
 }
 
+
+// ✅ Requiere iglesia + token antes de permitir acciones
+function asegurarIglesia(){
+  if(!iglesiaId || !tokenIglesia){
+    mostrarPantallaIglesia();
+    mostrarAlerta("🔒", "Selecciona tu iglesia e ingresa el PIN para continuar.");
+    return false;
+  }
+  return true;
+}
+
+
+/* === SUBIR ASISTENCIA MEJORADA === */
 /* === SUBIR ASISTENCIA MEJORADA === */
 async function subirAsistencia(){
   if(!usuarioGlobal) return mostrarAlerta("⚠️", "Debes iniciar sesión primero.");
+  if(!asegurarIglesia()) return;
+
   const total = Object.values(datos).reduce((a,b)=>a+b,0);
   if(total === 0) return mostrarPopupConfirm("Sin registros", "No hay personas registradas.", null);
 
@@ -1091,6 +1213,13 @@ async function subirAsistencia(){
     });
 
     const params = new URLSearchParams({
+      // ✅ IMPORTANTE
+      accion: "insertar",
+
+      // ✅ multi-iglesia
+      iglesia: iglesiaId,
+      token: tokenIglesia,
+
       usuario: usuarioGlobal,
       fecha,
       hermanos: datos.hermanos,
@@ -1102,24 +1231,34 @@ async function subirAsistencia(){
     });
 
     try {
-      const res = await fetch(`${URL_SCRIPT}?${params.toString()}`);
+      const res = await fetch(`${URL_SCRIPT}?${params.toString()}`, { cache: "no-store" });
       const text = await res.text();
 
-      if (text.includes('OK')) {
+      // Si el backend responde NOAUTH
+      if(String(text).includes("NOAUTH")){
+        localStorage.removeItem("iglesiaId");
+        localStorage.removeItem("tokenIglesia");
+        iglesiaId=""; tokenIglesia="";
+        mostrarPantallaIglesia();
+        return mostrarAlerta("🔒", "Tu sesión de iglesia expiró. Ingresa el PIN nuevamente.");
+      }
+
+      if (String(text).trim() === "OK") {
         mostrarPopupConfirm("✅ Enviado", "Asistencia registrada correctamente.", null);
         // 🔄 Reiniciar contadores
         for (const k in datos) { datos[k] = 0; document.getElementById(k).textContent = 0; }
         document.getElementById('total').textContent = 0;
-      } else if (text.includes('DUPLICADO')) {
+      } else if (String(text).includes("DUPLICADO")) {
         mostrarPopupConfirm("⚠️ Duplicado", "Ya se envió recientemente.", null);
       } else {
         mostrarPopupConfirm("ℹ️ Servidor", text, null);
       }
     } catch (e) {
-      mostrarPopupConfirm("⚠️ Error", "No se pudo conectar con el servidor.", null);
+      mostrarPopupConfirm("⚠️ Error", "No se pudo conectar con el servidor.\n" + (e?.message || String(e)), null);
     }
   });
 }
+
 
 /* === VER === */
 function abrirVerPantalla(){ 
@@ -1160,7 +1299,8 @@ async function verAsistencia(mes){
   const listado=document.getElementById('listado');
   listado.innerHTML='';
   try{
-    const res=await fetch(`${URL_SCRIPT}?accion=listar&mes=${encodeURIComponent(mes)}`);
+    if(!asegurarIglesia()) { showLoading(false); return; }
+const res=await fetch(`${URL_SCRIPT}?accion=listar&iglesia=${encodeURIComponent(iglesiaId)}&token=${encodeURIComponent(tokenIglesia)}&mes=${encodeURIComponent(mes)}`);
     const text=await res.text();
     let data;
     try{data=JSON.parse(text);}catch(e){data=[];}
@@ -1198,7 +1338,8 @@ async function eliminarAsistencia(usuarioEnc,fechaEnc){
   const fecha = decodeURIComponent(fechaEnc);
   mostrarPopupConfirm("Confirmar eliminación", `¿Eliminar el registro de ${usuario} en ${fecha}?`, async () => {
     try{
-      const res=await fetch(`${URL_SCRIPT}?accion=eliminar&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
+      if(!asegurarIglesia()) return;
+const res=await fetch(`${URL_SCRIPT}?accion=eliminar&iglesia=${encodeURIComponent(iglesiaId)}&token=${encodeURIComponent(tokenIglesia)}&usuario=${encodeURIComponent(usuario)}&fecha=${encodeURIComponent(fecha)}`);
       const text=await res.text();
       if(text.includes("ELIMINADA") || text.startsWith("ELIMINADAS_")){ 
         mostrarAlerta("🗑️", "Registro eliminado."); 
@@ -1245,31 +1386,6 @@ function escapeHTML(s){
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
