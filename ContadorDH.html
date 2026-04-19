@@ -1059,14 +1059,20 @@ body {
 
 
 <section id="verPantalla" aria-hidden="true">
-  <div id="verHeader">
-    <div class="left"><button onclick="cerrarVerPantalla()">←</button><div id="tituloMes" style="font-weight:700; font-size:1rem">Asistencia</div></div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <select id="selectMes" aria-label="Seleccionar mes" onchange="mesSeleccionado()"></select>
-      <button title="Refrescar" onclick="refrescarMes()">⟳</button>
-      <div id="loadingIndicator" style="display:none"><div class="spinner"></div></div>
-    </div>
+<div id="verHeader">
+  <div class="left">
+    <button onclick="cerrarVerPantalla()">←</button>
+    <div id="tituloMes" style="font-weight:700; font-size:1rem">Asistencia</div>
   </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button title="Compartir" onclick="compartirAsistencia()" style="background:linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);border:none;color:#fff;font-size:.95rem;font-weight:600;padding:0 12px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:transform .2s ease, box-shadow .2s ease, background .3s ease;">
+      📤 Compartir
+    </button>
+    <select id="selectMes" aria-label="Seleccionar mes" onchange="mesSeleccionado()"></select>
+    <button title="Refrescar" onclick="refrescarMes()">⟳</button>
+    <div id="loadingIndicator" style="display:none"><div class="spinner"></div></div>
+  </div>
+</div>
   <div id="listado"></div>
 </section>
 
@@ -1640,6 +1646,34 @@ function contactarSoporte(){
   const mensaje = encodeURIComponent("Hola, necesito soporte con la aplicación Asistencia Bochica Sur.");
   window.open(`https://wa.me/${numero}?text=${mensaje}`, '_blank');
   toggleMenu(); // Cerrar el menú después de seleccionar
+}
+
+
+  async function compartirAsistencia(){
+  try{
+    const mes = (document.getElementById('selectMes')?.value) || mesActual;
+    const listado = document.getElementById('listado');
+
+    if(!listado || !listado.innerText.trim()){
+      return mostrarAlerta("⚠️", "No hay información para compartir.");
+    }
+
+    const texto = `Asistencia de: ${mes}\n\n${listado.innerText.trim()}`;
+
+    if (navigator.share) {
+      await navigator.share({
+        title: `Asistencia ${mes}`,
+        text: texto
+      });
+    } else {
+      await navigator.clipboard.writeText(texto);
+      mostrarAlerta("✅", "Tu dispositivo no permite compartir directamente. Se copió el texto al portapapeles.");
+    }
+  }catch(e){
+    if(e?.name !== "AbortError"){
+      mostrarAlerta("⚠️", "No se pudo compartir la asistencia.");
+    }
+  }
 }
 /* === HELPERS === */
 function escapeHTML(s){
