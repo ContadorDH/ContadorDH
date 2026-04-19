@@ -1605,13 +1605,22 @@ const res=await fetch(`${URL_SCRIPT}?accion=listar&iglesia=${encodeURIComponent(
       const fechaEsc = escapeHTML(String(fecha || ''));
       const usuarioEnc = encodeURIComponent(String(usuario || ''));
       const fechaEnc = encodeURIComponent(String(fecha || ''));
-      return `<div class="row">
-        <strong>👤 ${usuarioEsc}</strong>
-        <small>📅 ${fechaEsc}</small>
-        <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
-        <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
-        ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarAsistencia('${usuarioEnc}','${fechaEnc}')">🗑️ Eliminar</button>`:''}
-      </div>`;
+     return `<div class="row">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+    <div style="flex:1;min-width:0;">
+      <strong>👤 ${usuarioEsc}</strong>
+      <small>📅 ${fechaEsc}</small>
+    </div>
+    <button
+      style="background:linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600;white-space:nowrap;"
+      onclick="compartirRegistro('${usuarioEnc}','${fechaEnc}','${h}','${hm}','${am}','${ad}','${ni}','${tot}')"
+    >📤 Compartir</button>
+  </div>
+
+  <div style="margin-top:8px">🙋‍♂️ ${h} 🙋‍♀️ ${hm} 🤝 ${am} 👧 ${ad} 🧒 ${ni}</div>
+  <small>🔢 Total: <strong>${escapeHTML(tot)}</strong></small>
+  ${esPropio?`<button style="margin-top:8px;background:#ff4444;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer" onclick="eliminarAsistencia('${usuarioEnc}','${fechaEnc}')">🗑️ Eliminar</button>`:''}
+</div>`;
     }).join('');
   }catch(e){
     listado.innerHTML=`<div class="row">⚠️ Error obteniendo datos.</div>`;
@@ -1619,7 +1628,38 @@ const res=await fetch(`${URL_SCRIPT}?accion=listar&iglesia=${encodeURIComponent(
     showLoading(false);
   }
 }
+async function compartirRegistro(usuarioEnc, fechaEnc, h, hm, am, ad, ni, tot){
+  try{
+    const usuario = decodeURIComponent(usuarioEnc);
+    const fecha = decodeURIComponent(fechaEnc);
 
+    const texto =
+`Asistencia individual
+
+Usuario: ${usuario}
+Fecha: ${fecha}
+Hermanos: ${h}
+Hermanas: ${hm}
+Amigos: ${am}
+Adolescentes: ${ad}
+Niños: ${ni}
+Total: ${tot}`;
+
+    if (navigator.share) {
+      await navigator.share({
+        title: `Asistencia de ${usuario}`,
+        text: texto
+      });
+    } else {
+      await navigator.clipboard.writeText(texto);
+      mostrarAlerta("✅", "Tu dispositivo no permite compartir directamente. Se copió el registro al portapapeles.");
+    }
+  }catch(e){
+    if(e?.name !== "AbortError"){
+      mostrarAlerta("⚠️", "No se pudo compartir este registro.");
+    }
+  }
+}
 /* === ELIMINAR ASISTENCIA === */
 async function eliminarAsistencia(usuarioEnc,fechaEnc){
   const usuario = decodeURIComponent(usuarioEnc);
