@@ -211,8 +211,10 @@ header > button {
   border: 0;
   color: #fff;
   cursor: pointer;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
+  gap: 10px;
   min-width: 0;
   width: 100%;
   padding: 0;
@@ -220,24 +222,25 @@ header > button {
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   animation: fadeInTitle 0.6s ease-in-out;
 }
+
 #appTitleText {
   display: block;
   min-width: 0;
-  flex: 1;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.3px;
-  text-align: left;
+  text-align: center;
 }
 
 #editTitleBtn i {
   font-size: 0.9rem;
   flex-shrink: 0;
   opacity: 0.95;
-  margin-left: auto; /* 🔥 ESTO EMPUJA EL ICONO AL FINAL */
+  margin-left: 0;
 }
 
 #headerRight {
