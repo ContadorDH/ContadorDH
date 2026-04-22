@@ -203,7 +203,7 @@ header > button {
   min-width: 0;
   display: flex;
   align-items: center;
-  flex: 1;
+  width: 100%;
 }
 
 #editTitleBtn {
@@ -211,26 +211,29 @@ header > button {
   border: 0;
   color: #fff;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
   min-width: 0;
+  width: 100%;
   max-width: 100%;
   padding: 0;
   font: inherit;
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   animation: fadeInTitle 0.6s ease-in-out;
 }
-
 #appTitleText {
   display: block;
   min-width: 0;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.3px;
+  text-align: left;
 }
 
 #editTitleBtn i {
