@@ -1091,26 +1091,44 @@ function changeTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme); // Guardar tema seleccionado
 }
- function refrescarPagina() {
-    try {
-      // Limpia el almacenamiento local y de sesión
-      localStorage.clear();
-      sessionStorage.clear();
-      
-      // Limpia caché del navegador si es posible (moderno)
-      if ('caches' in window) {
-        caches.keys().then(function(names) {
-          for (let name of names) caches.delete(name);
-        });
-      }
 
-      // Forzar recarga total desde el servidor (no desde caché)
-      location.reload(true);
-    } catch (e) {
-      console.error("Error al refrescar:", e);
-      location.reload();
+
+ function refrescarPagina() {
+  try {
+    // Mantener la sesión
+    const usuario = localStorage.getItem("usuarioCelula");
+    const iglesia = localStorage.getItem("iglesiaId");
+    const token = localStorage.getItem("tokenIglesia");
+    const theme = localStorage.getItem("theme");
+
+    // Forzar limpieza de caché del sitio, pero sin cerrar sesión
+    if ('caches' in window) {
+      caches.keys().then(function(names) {
+        Promise.all(names.map(name => caches.delete(name))).finally(() => {
+          // restaurar por seguridad
+          if (usuario !== null) localStorage.setItem("usuarioCelula", usuario);
+          if (iglesia !== null) localStorage.setItem("iglesiaId", iglesia);
+          if (token !== null) localStorage.setItem("tokenIglesia", token);
+          if (theme !== null) localStorage.setItem("theme", theme);
+
+          // forzar nueva petición del HTML a GitHub
+          const url = new URL(window.location.href);
+          url.searchParams.set("_update", Date.now());
+          window.location.replace(url.toString());
+        });
+      });
+    } else {
+      const url = new URL(window.location.href);
+      url.searchParams.set("_update", Date.now());
+      window.location.replace(url.toString());
     }
+  } catch (e) {
+    console.error("Error al refrescar:", e);
+    const url = new URL(window.location.href);
+    url.searchParams.set("_update", Date.now());
+    window.location.replace(url.toString());
   }
+}
 
   
 /* === LOGIN === */
