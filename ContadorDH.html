@@ -183,6 +183,15 @@
       font-weight: 600;
       box-shadow: 0 2px 10px var(--shadow);
     }
+
+    #headerRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 150px; /* reserva espacio para evitar que monte el título */
+  z-index: 2;
+}
     header button {
       background: none;
       border: 0;
@@ -190,18 +199,42 @@
       font-size: 20px;
       cursor: pointer;
     }
-    header .title {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-      text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
-      animation: fadeInTitle 0.6s ease-in-out;
-    }
+ header .title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  animation: fadeInTitle 0.6s ease-in-out;
+  max-width: calc(100% - 220px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 1;
+}
+
+@media (max-width: 430px) {
+  #headerRight {
+    min-width: 128px;
+    gap: 6px;
+  }
+
+  #installBtn {
+    min-width: 84px;
+    padding: 0 10px;
+    font-size: 0.8rem;
+  }
+
+  header .title {
+    max-width: calc(100% - 190px);
+    font-size: 1rem;
+  }
+}
+
+
     @keyframes fadeInTitle {
       from { opacity: 0; transform: translateX(-50%) translateY(-5px); }
       to { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -647,19 +680,37 @@ main {
     }
 
 
-    #installBtn {
-  width: 36px;
+#installBtn {
   height: 36px;
-  border-radius: 50%;
+  min-width: 92px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
   border: 2px solid rgba(255, 255, 255, 0.33);
   display: none;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   cursor: pointer;
   transition: transform 0.2s ease, background 0.3s ease;
-  padding: 0;
+  padding: 0 12px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#installBtn:hover {
+  transform: scale(1.03);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+#installBtn i {
+  font-size: 0.9rem;
+}
+
+#installBtn span {
+  line-height: 1;
 }
 
 #installBtn:hover {
@@ -946,12 +997,14 @@ body {
 <header>
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
   <div class="title">📋 Asistencia Bochica Sur</div>
- <div style="display:flex; align-items:center; gap:8px;">
-  <button id="installBtn" onclick="instalarPWA()" title="Instalar app" style="display:none;">
-    <i class="fas fa-download"></i>
-  </button>
-  <div id="userCircle" onclick="mostrarNombreUsuario()" title=""></div>
-</div>
+
+  <div id="headerRight">
+    <button id="installBtn" onclick="instalarPWA()" title="Instalar app">
+      <i class="fas fa-download"></i>
+      <span>Instalar</span>
+    </button>
+    <div id="userCircle" onclick="mostrarNombreUsuario()" title=""></div>
+  </div>
 </header>
 
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
