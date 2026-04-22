@@ -203,6 +203,7 @@ header > button {
   min-width: 0;
   display: flex;
   align-items: center;
+  flex: 1;
 }
 
 #editTitleBtn {
@@ -244,6 +245,7 @@ header > button {
   justify-content: flex-end;
   gap: 8px;
   min-width: 0;
+  width: auto;
 }
 
 
@@ -1451,16 +1453,24 @@ function esPWAInstalada() {
 
 function actualizarBotonInstalar() {
   const btn = document.getElementById("installBtn");
-  if (!btn) return;
+  const headerRight = document.getElementById("headerRight");
 
-  if (esPWAInstalada()) {
+  if (!btn || !headerRight) return;
+
+  const instalada = esPWAInstalada();
+
+  if (instalada || !deferredPrompt) {
     btn.style.display = "none";
-    return;
+
+    // 👇 cuando NO hay botón → el headerRight ocupa menos espacio
+    headerRight.style.gap = "0px";
+  } else {
+    btn.style.display = "inline-flex";
+
+    // 👇 cuando sí hay botón → espacio normal
+    headerRight.style.gap = "8px";
   }
-
-  btn.style.display = deferredPrompt ? "inline-flex" : "none";
 }
-
 async function instalarPWA() {
   if (!deferredPrompt) return;
 
