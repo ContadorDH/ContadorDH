@@ -213,11 +213,8 @@ header > button {
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
   min-width: 0;
   width: 100%;
-  max-width: 100%;
   padding: 0;
   font: inherit;
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
@@ -240,6 +237,7 @@ header > button {
   font-size: 0.9rem;
   flex-shrink: 0;
   opacity: 0.95;
+  margin-left: auto; /* 🔥 ESTO EMPUJA EL ICONO AL FINAL */
 }
 
 #headerRight {
