@@ -647,6 +647,30 @@ main {
     }
 
 
+    #installBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.33);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  padding: 0;
+}
+
+#installBtn:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+#installBtn i {
+  font-size: 0.95rem;
+}
+
 
 
 /* ✅ LOADER GLOBAL (overlay pro) */
@@ -922,7 +946,12 @@ body {
 <header>
   <button aria-label="menu" onclick="toggleMenu()">☰</button>
   <div class="title">📋 Asistencia Bochica Sur</div>
+ <div style="display:flex; align-items:center; gap:8px;">
+  <button id="installBtn" onclick="instalarPWA()" title="Instalar app" style="display:none;">
+    <i class="fas fa-download"></i>
+  </button>
   <div id="userCircle" onclick="mostrarNombreUsuario()" title=""></div>
+</div>
 </header>
 
 <div id="menuOverlay" onclick="closeMenuIfOpen(event)"></div>
@@ -1080,6 +1109,8 @@ const datos = { hermanos:0, hermanas:0, amigos:0, adolescentes:0, niños:0 };
 const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 let mesActual = meses[(new Date()).getMonth()];
 let usuarioGlobal = localStorage.getItem("usuarioCelula") || "";
+
+let deferredPrompt = null;
 
 // === MULTI-IGLESIA (Paso 1) ===
 let iglesiaId = localStorage.getItem("iglesiaId") || "";
@@ -1282,7 +1313,37 @@ function cerrarPopupUsuario(){
   document.getElementById("popupUsuario").style.display = "none";
 }
 
+function esPWAInstalada() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
 
+function actualizarBotonInstalar() {
+  const btn = document.getElementById("installBtn");
+  if (!btn) return;
+
+  if (esPWAInstalada()) {
+    btn.style.display = "none";
+    return;
+  }
+
+  btn.style.display = deferredPrompt ? "inline-flex" : "none";
+}
+
+async function instalarPWA() {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+  const choiceResult = await deferredPrompt.userChoice;
+
+  deferredPrompt = null;
+  actualizarBotonInstalar();
+
+  if (choiceResult.outcome === 'accepted') {
+    console.log('PWA instalada');
+  } else {
+    console.log('Instalación cancelada');
+  }
+}
 
 function abrirSobreNosotros(){
   const popup = document.getElementById("popupSobre");
@@ -1753,6 +1814,18 @@ function contactarSoporte(){
 function escapeHTML(s){
   return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  actualizarBotonInstalar();
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  actualizarBotonInstalar();
+});
+
 (function init(){
   actualizarTotal();
   const select=document.getElementById('selectMes');
@@ -1772,6 +1845,8 @@ function escapeHTML(s){
   const savedTheme = localStorage.getItem('theme') || 'claro';
   document.documentElement.setAttribute('data-theme', savedTheme);
   document.getElementById('themeSelect').value = savedTheme;
+
+  actualizarBotonInstalar();
 })();
 </script>
 </body>
