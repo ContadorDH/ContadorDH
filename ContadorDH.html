@@ -203,6 +203,7 @@ header > button {
   min-width: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
@@ -211,12 +212,13 @@ header > button {
   border: 0;
   color: #fff;
   cursor: pointer;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 6px;
   min-width: 0;
-  width: 100%;
+  max-width: 100%;
+  width: auto;
   padding: 0;
   font: inherit;
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
@@ -226,24 +228,21 @@ header > button {
 #appTitleText {
   display: block;
   min-width: 0;
-  width: 100%;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
-  /* 🔥 tamaño adaptable */
-  font-size: clamp(1rem, 4vw, 1.4rem);
-
+ font-size: clamp(1.2rem, 5.6vw, 2.2rem);
   font-weight: 600;
   letter-spacing: 0.3px;
   text-align: center;
 }
 
 #editTitleBtn i {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   flex-shrink: 0;
   opacity: 0.95;
-  margin-left: 0;
+  margin: 0;
 }
 
 #headerRight {
